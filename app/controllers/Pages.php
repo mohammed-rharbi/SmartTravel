@@ -2,24 +2,32 @@
 class Pages extends Controller
 {
   public function __construct()
+
   {
+    $routeDAO = new RouteDAO();
   }
 
+  // Load Homepage
   public function index()
   {
-    $data = [
-      'title' => 'SmartTravel',
-    ];
+    // If logged in, redirect to posts
+    if (isset($_SESSION['user_id'])) {
+      redirect('posts');
+    }
 
-    $this->view('pages/index', $data);
+
+    // Load homepage/index view
+    $this->view('pages/index');
   }
 
   public function about()
   {
+    //Set Data
     $data = [
-      'title' => 'About Us'
+      'version' => '1.0.0'
     ];
 
-    $this->view('pages/about', $data);
+    // Load about view
+    $this->view('pages/admin', $data);
   }
 }

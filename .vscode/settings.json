@@ -9,9 +9,10 @@
       "server": "localhost",
       "port": 3306,
       "driver": "MySQL",
-      "name": "SmartTravelv2",
-      "database": "STV2",
-      "username": "root"
+      "name": "SmartTavel",
+      "database": "SmartTravelv2",
+      "username": "root",
+      "password": ""
     }
   ]
 }
