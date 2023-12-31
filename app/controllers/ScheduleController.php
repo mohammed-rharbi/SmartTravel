@@ -1,93 +1,91 @@
 <?php
-include_once 'model/ScheduleDAO.php';
-// Instantiate ScheduleDAO
-$scheduleDAO = new ScheduleDAO();
-
-// Get all schedules
-$schedules = $scheduleDAO->getAllSchedules();
-
-// Include the view file
-include_once 'view/schedules.php';
 class ScheduleController
 {
-    private $scheduleDAO;
-
-    public function __construct()
+    public function index()
     {
-        $this->scheduleDAO = new ScheduleDAO();
+        // Example code for displaying a list of schedules
+        $scheduleDAO = new ScheduleDAO();
+        $schedules = $scheduleDAO->getAllSchedules();
+
+        // Example: Render a view with the list of schedules
+        $this->render('schedule/index', ['schedules' => $schedules]);
     }
 
-    public function indexSchedule()
+    public function show($id)
     {
-        // Display a list of schedules
-        $schedules = $this->scheduleDAO->getAllSchedules();
-        // Include your view file (e.g., schedule/index.php) to display the list
-        include '../view/schedule/index.php';
+        // Example code for displaying details of a specific schedule
+        $scheduleDAO = new ScheduleDAO();
+        $schedule = $scheduleDAO->getScheduleById($id);
+
+        // Example: Render a view with the details of the specific schedule
+        $this->render('schedule/show', ['schedule' => $schedule]);
     }
 
-    public function add()
+    public function create()
     {
-        // Handle the addition of a new schedule
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Validate and process the form data
-            $date = $_POST['date'];
-            $departureTime = $_POST['departureTime'];
-            $arrivalTime = $_POST['arrivalTime'];
-            $availableSeats = $_POST['availableSeats'];
-            $busID = $_POST['busID'];
-            $routeID = $_POST['routeID'];
-
-            // Create a Schedule object
-            $schedule = new Schedule(null, $date, $departureTime, $arrivalTime, $availableSeats, $busID, $routeID);
-
-            // Add the schedule to the database
-            $this->scheduleDAO->addSchedule($schedule);
-
-            // Redirect to the index page or show a success message
-            header('Location: index.php');
-            exit();
-        } else {
-            // Display the form to add a new schedule
-            // Include your view file (e.g., schedule/add.php)
-            include '../view/schedule/add.php';
-        }
+        // Example code for displaying a form to create a new schedule
+        // Example: Render a view with a form for creating a new schedule
+        $this->render('schedule/create');
     }
 
-    public function edit($scheduleID)
+    public function store($data)
     {
-        // Handle the editing of an existing schedule
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Validate and process the form data
-            $date = $_POST['date'];
-            $departureTime = $_POST['departureTime'];
-            $arrivalTime = $_POST['arrivalTime'];
-            $availableSeats = $_POST['availableSeats'];
-            $busID = $_POST['busID'];
-            $routeID = $_POST['routeID'];
+        // Example code for handling the creation of a new schedule
+        $schedule = new Schedule($data['date'], $data['departureTime'], $data['arrivalTime'], $data['availableSeats']);
 
-            // Create a Schedule object
-            $schedule = new Schedule($scheduleID, $date, $departureTime, $arrivalTime, $availableSeats, $busID, $routeID);
+        $scheduleDAO = new ScheduleDAO();
+        $scheduleDAO->createSchedule($schedule);
 
-            // Update the schedule in the database
-            $this->scheduleDAO->updateSchedule($schedule);
-
-            // Redirect to the index page or show a success message
-            header('Location: index.php');
-            exit();
-        } else {
-            // Display the form to edit an existing schedule
-            $schedule = $this->scheduleDAO->getScheduleById($scheduleID);
-            // Include your view file (e.g., schedule/edit.php)
-            include '../view/schedule/edit.php';
-        }
+        // Example: Redirect to the list of schedules after creating a new schedule
+        header('Location: /schedules');
     }
 
-    public function delete($scheduleID)
+    public function edit($id)
     {
-        // Handle the deletion of an existing schedule
-        $this->scheduleDAO->deleteSchedule($scheduleID);
-        // Redirect to the index page or show a success message
-        header('Location: index.php');
-        exit();
+        // Example code for displaying a form to edit a specific schedule
+        $scheduleDAO = new ScheduleDAO();
+        $schedule = $scheduleDAO->getScheduleById($id);
+
+        // Example: Render a view with a form for editing the specific schedule
+        $this->render('schedule/edit', ['schedule' => $schedule]);
+    }
+
+    public function update($id, $data)
+    {
+        // Example code for handling the update of a specific schedule
+        $scheduleDAO = new ScheduleDAO();
+        $schedule = $scheduleDAO->getScheduleById($id);
+
+        // Update the schedule object with new data
+        $schedule->setDate($data['date']);
+        $schedule->setDepartureTime($data['departureTime']);
+        $schedule->setArrivalTime($data['arrivalTime']);
+        $schedule->setAvailableSeats($data['availableSeats']);
+
+        $scheduleDAO->updateSchedule($schedule);
+
+        // Example: Redirect to the list of schedules after updating the schedule
+        header('Location: /schedules');
+    }
+
+    public function delete($id)
+    {
+        // Example code for handling the deletion of a specific schedule
+        $scheduleDAO = new ScheduleDAO();
+        $schedule = $scheduleDAO->getScheduleById($id);
+
+        $scheduleDAO->deleteSchedule($schedule);
+
+        // Example: Redirect to the list of schedules after deleting the schedule
+        header('Location: /schedules');
+    }
+
+    // You can add more actions/methods as needed for other functionalities
+
+    private function render($view, $data = [])
+    {
+        // Example: Implement your logic to render the view with data
+        // You might use a template engine or any other rendering method here
+        // Example: include 'views/' . $view . '.php';
     }
 }

@@ -29,7 +29,7 @@ class Bus
     {
         return $this->licensePlate;
     }
-    function getCompany()
+    public function getCompany()
     {
         return $this->company;
     }

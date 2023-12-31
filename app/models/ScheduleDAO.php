@@ -18,7 +18,7 @@ class ScheduleDAO extends DatabaseDAO
             $bus = $BusDao->getBusById($row['busID']);
             $route = $RouteDao->getRouteById($row['routeID']);
 
-            $schedules[] = new Schedule($row['scheduleID'], $row['date'], $row['departureTime'], $row['arrivalTime'], $row['availableSeats'], $bus, $route);
+            $schedules[] = new Schedule($row['scheduleID'], $row['date'], $row['departureTime'], $row['arrivalTime'], $row['availableSeats'], $bus, $route, $row['companyImage']);
         }
         return $schedules;
     }
@@ -32,7 +32,7 @@ class ScheduleDAO extends DatabaseDAO
         $RouteDao = new RouteDao();
         $bus = $BusDao->getBusById($result['busID']);
         $route = $RouteDao->getRouteById($result['routeID']);
-        return new Schedule($result['scheduleID'], $result['date'], $result['departureTime'], $result['arrivalTime'], $result['availableSeats'], $bus, $route); // Return null if schedule with given ID is not found
+        return new Schedule($result['scheduleID'], $result['date'], $result['departureTime'], $result['arrivalTime'], $result['availableSeats'], $bus, $route, $result['companyImage']); // Return null if schedule with given ID is not found
     }
     public function addSchedule($schedule)
     {
@@ -91,26 +91,48 @@ class ScheduleDAO extends DatabaseDAO
 
         return $this->execute($query, $params);
     }
-    public function getScheduelByEndCityStartCity($endCity, $StartCity, $date, $places)
+    public function getScheduelByEndCityStartCity($date, $endCity, $startCity, $places)
     {
+        $query = "SELECT Schedule.*, Route.*, Company.img AS companyImage
+        FROM Schedule
+        INNER JOIN Route ON Schedule.routeID = Route.routeID
+        INNER JOIN Bus ON Schedule.busID = Bus.busID
+        INNER JOIN Company ON Bus.companyID = Company.companyID
+        WHERE Schedule.date >= :date
+        AND Schedule.availableSeats >= :places
+        AND Route.startCityID = :startCity
+        AND Route.endCityID = :endCity";
 
-        $query = "SELECT * FROM Schedule inner join route on routeID=route.routeID  WHERE date >= :date AND availableSeats = :places AND route. = :startCity";
+
+
         $params = [
             ':date' => $date,
             ':endCity' => $endCity,
-            ':startCity' => $StartCity,
+            ':startCity' => $startCity,
             ':places' => $places
         ];
-        $result = $this->fetch($query, $params);
-        $BusDao = new BusDao();
-        $RouteDao = new RouteDao();
-        $bus = $BusDao->getBusById($result['busID']);
-        $route = $RouteDao->getRouteById($result['routeID']);
-        return new Schedule($result['scheduleID'], $result['date'], $result['departureTime'], $result['arrivalTime'], $result['availableSeats'], $bus, $route); // Return null if schedule with given ID is not found
 
+        $result = $this->fetchAll($query, $params);
+        $scheduels = array();
 
+        foreach ($result as $row) {
+            $BusDao = new BusDao();
+            $RouteDao = new RouteDao();
+            $bus = $BusDao->getBusById($row['busID']);
+            $route = $RouteDao->getRouteById($row['routeID']);
+            $scheduels[] = new Schedule(
+                $row['scheduleID'],
+                $row['date'],
+                $row['departureTime'],
+                $row['arrivalTime'],
+                $row['availableSeats'],
+                $bus,
+                $route,
+                $row['companyImage']
+            );
+        }
+
+        return $scheduels;
     }
+
 }
-$sc = new ScheduleDAO();
-$c = $sc->getScheduleById(1);
-print_r($c);

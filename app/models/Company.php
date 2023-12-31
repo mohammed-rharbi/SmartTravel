@@ -35,12 +35,10 @@ class Company
     {
         $this->companyName = $companyName;
     }
-    public function setCompanyImage($companyImage)
-    {
+    public function setCompanyImage($companyImage){
         $this->companyImage = $companyImage;
     }
-    public function getCompanyImage()
-    {
+    public function getCompanyImage(){
         return $this->companyImage;
     }
 

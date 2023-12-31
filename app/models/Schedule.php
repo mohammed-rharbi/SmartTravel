@@ -9,8 +9,8 @@ class Schedule
     private $availableSeats;
     private $bus;
     private $route;
-
-    public function __construct($scheduleID, $date, $departureTime, $arrivalTime, $availableSeats, $bus, $route)
+    private $companyID;
+    public function __construct($scheduleID, $date, $departureTime, $arrivalTime, $availableSeats, $bus, $route, $companyID)
     {
         $this->scheduleID = $scheduleID;
         $this->date = $date;
@@ -19,6 +19,9 @@ class Schedule
         $this->availableSeats = $availableSeats;
         $this->bus = $bus;
         $this->route = $route;
+        $this->companyID = $companyID;
+
+
     }
 
     public function getScheduleID()
@@ -56,5 +59,17 @@ class Schedule
         return $this->route;
     }
 
-    // Add setters if needed
+    public function getCompanyID()
+    {
+        return $this->companyID;
+    }
+    public function getCompanyImageByID($companyID)
+    {
+        $companyID = $this->getCompanyID();
+        $companyImage = $companyID;
+        return $companyImage;
+    }
+
 }
+
+?>
