@@ -10,7 +10,6 @@ class AdminController
     public function index()
     {
 
-        // Load the home page view
         include_once 'app/views/adminPage.php';
         
     }
