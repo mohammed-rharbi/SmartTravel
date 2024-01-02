@@ -18,7 +18,7 @@ class ScheduleDAO extends DatabaseDAO
             $bus = $BusDao->getBusById($row['busID']);
             $route = $RouteDao->getRouteById($row['routeID']);
 
-            $schedules[] = new Schedule($row['scheduleID'], $row['date'], $row['departureTime'], $row['arrivalTime'], $row['availableSeats'], $bus, $route, $row['companyImage']);
+            $schedules[] = new Schedule($row['scheduleID'], $row['date'], $row['departureTime'], $row['arrivalTime'], $row['availableSeats'], $bus, $route, $bus->getCompany()->getCompanyID(), $row['price']);
         }
         return $schedules;
     }
@@ -32,7 +32,18 @@ class ScheduleDAO extends DatabaseDAO
         $RouteDao = new RouteDao();
         $bus = $BusDao->getBusById($result['busID']);
         $route = $RouteDao->getRouteById($result['routeID']);
-        return new Schedule($result['scheduleID'], $result['date'], $result['departureTime'], $result['arrivalTime'], $result['availableSeats'], $bus, $route, $result['companyImage']); // Return null if schedule with given ID is not found
+        return new Schedule(
+            $result['scheduleID'],
+            $result['date'],
+            $result['departureTime'],
+            $result['arrivalTime'],
+            $result['availableSeats'],
+            $bus,
+            $route,
+            isset($result['companyImage']) ? $result['companyImage'] : null,
+            $result['price']
+        );
+
     }
     public function addSchedule($schedule)
     {
@@ -64,8 +75,8 @@ class ScheduleDAO extends DatabaseDAO
         $departureTime = $schedule->getDepartureTime();
         $arrivalTime = $schedule->getArrivalTime();
         $availableSeats = $schedule->getAvailableSeats();
-        $bus = $schedule->getBus()->getBusID();
-        $route = $schedule->getRoute()->getRouteID();
+        $busID = $schedule->getBusID();
+        $routeID = $schedule->getRouteID();
 
         $query = "UPDATE Schedule SET date = :date, departureTime = :departureTime, 
                   arrivalTime = :arrivalTime, availableSeats = :availableSeats, 
@@ -77,8 +88,8 @@ class ScheduleDAO extends DatabaseDAO
             ':departureTime' => $departureTime,
             ':arrivalTime' => $arrivalTime,
             ':availableSeats' => $availableSeats,
-            ':busID' => $bus,
-            ':routeID' => $route
+            ':busID' => $busID,
+            ':routeID' => $routeID
         ];
 
         return $this->execute($query, $params);
@@ -93,7 +104,7 @@ class ScheduleDAO extends DatabaseDAO
     }
     public function getScheduelByEndCityStartCity($date, $endCity, $startCity, $places)
     {
-        $query = "SELECT Schedule.*, Route.*, Company.img AS companyImage
+        $query = "SELECT Schedule.*, Route.*, Company.companyImage AS companyImage
         FROM Schedule
         INNER JOIN Route ON Schedule.routeID = Route.routeID
         INNER JOIN Bus ON Schedule.busID = Bus.busID
@@ -128,11 +139,13 @@ class ScheduleDAO extends DatabaseDAO
                 $row['availableSeats'],
                 $bus,
                 $route,
-                $row['companyImage']
+                $row['companyImage'],
+                $row['price']
             );
         }
 
         return $scheduels;
     }
+
 
 }

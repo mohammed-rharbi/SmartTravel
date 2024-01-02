@@ -1,92 +1,124 @@
 <?php
-
 class RouteController
 {
-    public function index()
-    {
-        // Example code for displaying a list of routes
-        $routeDAO = new RouteDAO();
-        $routes = $routeDAO->getAll();
+    private $routeDAO;
+    private $cityDAO; // Assuming you have a CityDAO
 
-        // Example: Render a view with the list of routes
-        $this->render('route/index', ['routes' => $routes]);
+    public function __construct()
+    {
+        $this->routeDAO = new RouteDAO();
+        $this->cityDAO = new CityDAO(); // Assuming you have a CityDAO
     }
 
-    public function show($id)
+    public function index()
     {
-        // Example code for displaying details of a specific route
-        $routeDAO = new RouteDAO();
-        $route = $routeDAO->getById($id);
+        // Retrieve all routes
+        $routes = $this->routeDAO->getAllRoutes();
 
-        // Example: Render a view with the details of the specific route
-        $this->render('route/show', ['route' => $route]);
+        // Pass the data to the view (you may have a specific view for listing routes)
+        include_once 'app/views/route/index.php';
     }
 
     public function create()
-    {
-        // Example code for displaying a form to create a new route
-        // Example: Render a view with a form for creating a new route
-        $this->render('route/create');
+    {   // Retrieve all cities (you may have a method in CityDAO to get all cities)
+        $cities = $this->cityDAO->getAllCities();
+        // Display the form for creating a new route
+        include_once 'app/views/route/create.php';
     }
 
-    public function store($data)
+    public function store()
     {
-        // Example code for handling the creation of a new route
-        $route = new Route($data['departureCity'], $data['destinationCity'], $data['distance'], $data['duration']);
+        // Handle the form submission to store a new route in the database
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Validate and process the form data
+            $startCityID = $_POST['startCity'];
+            $endCityID = $_POST['endCity'];
+            $distance = $_POST['distance'];
+            $duration = $_POST['duration'];
 
-        $routeDAO = new RouteDAO();
-        $routeDAO->create($route);
+            // Retrieve City objects based on IDs
+            $startCity = $this->cityDAO->getCityById($startCityID);
+            $endCity = $this->cityDAO->getCityById($endCityID);
 
-        // Example: Redirect to the list of routes after creating a new route
-        header('Location: /routes');
+            // Check if cities are found
+
+            // Create a new Route object
+            $route = new Route(null, $startCity, $endCity, $distance, $duration);
+
+            // Pass the route object to the addRoute method in RouteDAO
+            $this->routeDAO->addRoute($route);
+            // Redirect to the index page or show the newly created route
+            header("Location: index.php?action=routeindex");
+            exit();
+        }
     }
 
-    public function edit($id)
+    public function edit($routeID)
     {
-        // Example code for displaying a form to edit a specific route
-        $routeDAO = new RouteDAO();
-        $route = $routeDAO->getById($id);
+        // Retrieve a specific route by ID to populate the edit form
+        $route = $this->routeDAO->getRouteById($routeID);
 
-        // Example: Render a view with a form for editing the specific route
-        $this->render('route/edit', ['route' => $route]);
+        // Retrieve all cities (you may have a method in CityDAO to get all cities)
+        $cities = $this->cityDAO->getAllCities();
+
+        // Display the form for editing the route
+        include_once 'app/views/route/edit.php';
     }
 
-    public function update($id, $data)
+    public function update($routeID)
     {
-        // Example code for handling the update of a specific route
-        $routeDAO = new RouteDAO();
-        $route = $routeDAO->getById($id);
+        // Handle the form submission to update an existing route in the database
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Validate and process the form data
+            $startCityID = $_POST['startCity'];
+            $endCityID = $_POST['endCity'];
+            $distance = $_POST['distance'];
+            $duration = $_POST['duration'];
 
-        // Update the route object with new data
-        $route->setDepartureCity($data['departureCity']);
-        $route->setDestinationCity($data['destinationCity']);
-        $route->setDistance($data['distance']);
-        $route->setDuration($data['duration']);
+            // Retrieve existing route and City objects
+            $existingRoute = $this->routeDAO->getRouteById($routeID);
+            $startCity = $this->cityDAO->getCityById($startCityID);
+            $endCity = $this->cityDAO->getCityById($endCityID);
 
-        $routeDAO->update($route);
+            // Update the existing route properties
+            $existingRoute->setStartCity($startCity);
+            $existingRoute->setEndCity($endCity);
+            $existingRoute->setDistance($distance);
+            $existingRoute->setDuration($duration);
 
-        // Example: Redirect to the list of routes after updating the route
-        header('Location: /routes');
+            // Pass the updated route object to the updateRoute method in RouteDAO
+            $this->routeDAO->updateRoute($existingRoute);
+
+            // Redirect to the index page or show the updated route
+            header("Location: index.php?action=routeindex");
+            exit();
+        } else {
+            // Display an error or redirect to the edit page with a message
+        }
     }
 
-    public function delete($id)
+    public function delete($routeID)
     {
-        // Example code for handling the deletion of a specific route
-        $routeDAO = new RouteDAO();
-        $route = $routeDAO->getById($id);
+        // Retrieve a specific route by ID to confirm deletion
+        $route = $this->routeDAO->getRouteById($routeID);
 
-        $routeDAO->delete($route);
-
-        // Example: Redirect to the list of routes after deleting the route
-        header('Location: /routes');
+        // Display the delete confirmation page
+        include_once 'app/views/route/delete.php';
     }
 
-    // You can add more actions/methods as needed for other functionalities
-
-    private function render($view, $data = [])
+    public function destroy($routeID)
     {
-        // Example: Implement your logic to render the view with data
-        // You might use a template engine or any other rendering method here
-        // Example: include 'views/' . $view . '.php';
+        // Delete a route by ID
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Call the deleteRoute method in RouteDAO
+            $this->routeDAO->deleteRoute($routeID);
+
+            // Redirect to the index page or show a success message
+            header("Location: index.php?action=routeindex");
+            exit();
+        } else {
+            // Display an error or redirect to the index page with a message
+        }
     }
 }
+?>

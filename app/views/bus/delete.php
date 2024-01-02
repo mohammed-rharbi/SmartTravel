@@ -1,26 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+$title = "Edit Bus";
+ob_start();
+?>
+<div class="container mt-5">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delete Bus</title>
-</head>
+    <h1>
+        <?php $title ?>
+    </h1>
+    <p>Are you sure you want to delete this Bus?</p>
 
-<body>
-    <h1>Delete Bus</h1>
-
-    <p>Are you sure you want to delete the bus with ID <?= $bus->getBusID(); ?>?</p>
-
-    <form action="index.php" method="post">
-        <input type="hidden" name="busID" value="<?= $bus->getBusID(); ?>">
-
-        <input type="submit" value="Yes, Delete">
+    <form method="post" action="index.php?action=busdestroy&id=<?= $bus->getBusID() ?>">
+        <button type="submit" class="btn btn-danger">Delete bus</button>
+        <a href="index.php?action=busindex" class="btn btn-secondary">Cancel</a>
     </form>
 
-    <br>
 
-    <a href="index.php">No, Go Back</a>
-</body>
-
-</html>
+    <?php $content = ob_get_clean(); ?>
+    <?php include_once 'app/views/include/layout.php'; ?>

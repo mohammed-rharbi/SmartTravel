@@ -12,7 +12,7 @@ class CompanyDAO extends DatabaseDAO
 
         $companies = array();
         foreach ($companyData as $companyRow) {
-            $companies[] = new Company($companyRow['companyID'], $companyRow['companyName'], $companyRow['img']);
+            $companies[] = new Company($companyRow['companyID'], $companyRow['companyName'], $companyRow['companyImage']);
         }
 
         return $companies;
@@ -25,7 +25,7 @@ class CompanyDAO extends DatabaseDAO
         $companyData = $this->fetch($query, $params);
 
         if ($companyData) {
-            return new Company($companyData['companyID'], $companyData['companyName'], $companyData['img']);
+            return new Company($companyData['companyID'], $companyData['companyName'], $companyData['companyImage']);
         }
 
         return null; // Return null if company with given ID is not found

@@ -2,10 +2,6 @@
 
 class HomeController
 {
-
-    public function __construct()
-    {
-    }
     public function index()
     {
         $Cites = new cityDAO();

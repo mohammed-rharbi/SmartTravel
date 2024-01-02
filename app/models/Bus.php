@@ -1,12 +1,11 @@
 <?php
-
 class Bus
 {
-    public $busID;
-    public $busNumber;
-    public $licensePlate;
-    public $company;
-    public $capacity;
+    private $busID;
+    private $busNumber;
+    private $licensePlate;
+    private $company;
+    private $capacity;
 
     public function __construct($busID, $busNumber, $licensePlate, $company, $capacity)
     {
@@ -17,24 +16,58 @@ class Bus
         $this->capacity = $capacity;
     }
 
-    function getBusID()
+    public function getBusID()
     {
         return $this->busID;
     }
-    function getBusNumber()
+
+    public function getBusNumber()
     {
         return $this->busNumber;
     }
-    function getLicensePlate()
+
+    public function getLicensePlate()
     {
         return $this->licensePlate;
     }
+
     public function getCompany()
     {
         return $this->company;
     }
-    function getCapacity()
+
+    public function getCompanyID()
+    {
+        return $this->company ? $this->company->getCompanyID() : null;
+    }
+    public function getCompanyName()
+    {
+        return $this->company ? $this->company->getCompanyName() : 'Unknown';
+    }
+    public function getCapacity()
     {
         return $this->capacity;
     }
+
+    // Add setters if needed
+    public function setBusNumber($busNumber)
+    {
+        $this->busNumber = $busNumber;
+    }
+
+    public function setLicensePlate($licensePlate)
+    {
+        $this->licensePlate = $licensePlate;
+    }
+
+    public function setCompany($company)
+    {
+        $this->company = $company;
+    }
+
+    public function setCapacity($capacity)
+    {
+        $this->capacity = $capacity;
+    }
+
 }
