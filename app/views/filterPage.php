@@ -12,7 +12,8 @@
                 <div class="row no-gutters">
                     <div class="col-md-4">
                         <?php if (!empty($companyImage)): ?>
-                        <img src="<?= $companyImage ?>" class="card-img" alt="Company Image">
+                        <img src="<?= $schedule->getBusID()->getCompany()->getCompanyImage() ?>" class="card-img"
+                            alt="Company Image">
                         <?php else: ?>
                         <!-- Default image or placeholder if no image is available -->
                         <img src="default_image.jpg" class="card-img" alt="Default Image">

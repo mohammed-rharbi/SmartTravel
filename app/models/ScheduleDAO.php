@@ -77,10 +77,11 @@ class ScheduleDAO extends DatabaseDAO
         $availableSeats = $schedule->getAvailableSeats();
         $busID = $schedule->getBusID();
         $routeID = $schedule->getRouteID();
+        $price = $schedule->getPrice();
 
         $query = "UPDATE Schedule SET date = :date, departureTime = :departureTime, 
                   arrivalTime = :arrivalTime, availableSeats = :availableSeats, 
-                  busID = :busID, routeID = :routeID 
+                  busID = :busID, routeID = :routeID , price = :price
                   WHERE scheduleID = :scheduleID";
         $params = [
             ':scheduleID' => $scheduleID,
@@ -89,7 +90,8 @@ class ScheduleDAO extends DatabaseDAO
             ':arrivalTime' => $arrivalTime,
             ':availableSeats' => $availableSeats,
             ':busID' => $busID,
-            ':routeID' => $routeID
+            ':routeID' => $routeID,
+            ':price' => $price
         ];
 
         return $this->execute($query, $params);

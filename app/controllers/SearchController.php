@@ -1,43 +1,60 @@
 <?php
+
 session_start();
+
 class SearchController
 {
     public function index()
     {
+        // Fetch the list of companies
+        $companyDAO = new CompanyDAO();
+        $allCompanies = $companyDAO->getAllCompanies();
+
+        // Initialize variables
+        $availableSchedules = [];
+        $filteredSchedules = [];
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $departureCityID = $_POST['departureCity'];
-            $arrivalCityID = $_POST['arrivalCity'];
-            $travelDate = $_POST['travelDate'];
-            $numPeople = $_POST['numPeople'];
-            $_SESSION['departureCity'] = $departureCityID;
+            // Handle Search Form submission
+            if (isset($_POST['departureCity'], $_POST['arrivalCity'], $_POST['travelDate'], $_POST['numPeople'])) {
+                // Handle search form submission, similar to your existing code
 
-            $_SESSION['arrivalCity'] = $arrivalCityID;
+                // Query the database for available schedules based on the form selection
+                $scheduleDAO = new ScheduleDAO();
 
-            $_SESSION['travelDate'] = $travelDate;
+                // Define the variables before calling the method
+                $date = $_POST['travelDate'];
+                $endCity = $_POST['arrivalCity'];
+                $startCity = $_POST['departureCity'];
+                $places = $_POST['numPeople'];
 
-            $_SESSION['numPeople'] = $numPeople;
+                $availableSchedules = $scheduleDAO->getScheduelByEndCityStartCity($date, $endCity, $startCity, $places);
 
+                // Handle Company Filter
+                if (isset($_POST['companyFilter'])) {
+                    $selectedCompanyID = $_POST['companyFilter'];
 
-            // Query the database for available schedules based on the form selection
-            $scheduleDAO = new ScheduleDAO();
+                    // Adjust the logic based on your actual filter criteria
+                    foreach ($availableSchedules as $schedule) {
+                        $scheduleCompanyID = $schedule->getBusID()->getCompany()->getCompanyID();
 
-            // Define the variables before calling the method
-            $date = $travelDate;
-            $endCity = $arrivalCityID;
-            $startCity = $departureCityID;
-            $places = $numPeople;
-
-            $availableSchedules = $scheduleDAO->getScheduelByEndCityStartCity($date, $endCity, $startCity, $places);
-            // $availableSchedules = $scheduleDAO->getAllSchedules();
-            // print_r($availableSchedules);
-
-            // Pass the data to the view
-            include_once 'app/views/searchPage.php';
+                        if ($selectedCompanyID === '' || $scheduleCompanyID == $selectedCompanyID) {
+                            $filteredSchedules[] = $schedule;
+                        }
+                    }
+                } else {
+                    // If "Show All" is selected, reset company filter and display all schedules
+                    $filteredSchedules = $availableSchedules;
+                }
+            }
         } else {
-            // Handle other cases or redirect to home if needed
-            header("Location: index.php");
-            exit();
+            // If no form submission, initialize with all schedules
+            $scheduleDAO = new ScheduleDAO();
+            $availableSchedules = $scheduleDAO->getAllSchedules();
+            $filteredSchedules = $availableSchedules;
         }
 
+        // Load the view
+        include_once 'app/views/searchPage.php';
     }
 }
