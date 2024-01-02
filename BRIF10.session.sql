@@ -1,4 +1,4 @@
--- Drop the database
+-- Drop the database if it exists
 DROP DATABASE IF EXISTS SmartTravelv2;
 -- Create the database
 CREATE DATABASE SmartTravelv2;
@@ -7,14 +7,18 @@ USE SmartTravelv2;
 -- Table for Users
 CREATE TABLE User (
     userID INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(255),
-    password VARCHAR(255),
-    email VARCHAR(255),
-    isActive BOOLEAN,
-    registrationDate DATE,
-    role ENUM('Admin', 'Client', 'Operator') DEFAULT 'Client',
-    companyID int,
-    FOREIGN KEY (userID) REFERENCES company(companyID)
+    username VARCHAR(255)
+);
+-- Table for Cities
+CREATE TABLE City (
+    cityID INT PRIMARY KEY AUTO_INCREMENT,
+    cityName VARCHAR(255)
+);
+-- Table for Companies
+CREATE TABLE Company (
+    companyID INT PRIMARY KEY AUTO_INCREMENT,
+    companyName VARCHAR(255),
+    companyImage VARCHAR(255)
 );
 -- Table for Travels
 CREATE TABLE Travel (
@@ -67,17 +71,6 @@ CREATE TABLE Points (
     FOREIGN KEY (userID) REFERENCES User(userID),
     FOREIGN KEY (travelID) REFERENCES Travel(travelID),
     FOREIGN KEY (reservationID) REFERENCES Reservation(reservationID)
-);
--- Table for Cities
-CREATE TABLE City (
-    cityID INT PRIMARY KEY AUTO_INCREMENT,
-    cityName VARCHAR(255)
-);
--- Table for Companies
-CREATE TABLE Company (
-    companyID INT PRIMARY KEY AUTO_INCREMENT,
-    companyName VARCHAR(255),
-    companyImage VARCHAR(255)
 );
 -- Table for Schedules
 CREATE TABLE Schedule (
