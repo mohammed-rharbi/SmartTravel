@@ -6,12 +6,14 @@ include_once __DIR__ . '/app/controllers/RouteController.php';
 include_once __DIR__ . '/app/controllers/ScheduleController.php';
 include_once __DIR__ . '/app/controllers/SearchController.php';
 include_once __DIR__ . '/app/controllers/FilterController.php';
+include_once __DIR__ . '/app/controllers/UserController.php';
 include_once __DIR__ . '/app/models/Bus.php';
 include_once __DIR__ . '/app/models/BusDAO.php';
 include_once __DIR__ . '/app/models/Route.php';
 include_once __DIR__ . '/app/models/RouteDAO.php';
 include_once __DIR__ . '/app/models/Schedule.php';
 include_once __DIR__ . '/app/models/ScheduleDAO.php';
+include_once __DIR__ . '/app/models/UserDAO.php';
 
 // Routing.
 if (isset($_GET['action'])) {
@@ -19,6 +21,7 @@ if (isset($_GET['action'])) {
     $routeController = new RouteController();
     $busController = new BusController();
     $scheduleController = new ScheduleController();
+    $userController = new UserController();
 
     switch ($action) {
         case '/':
@@ -122,6 +125,18 @@ if (isset($_GET['action'])) {
             $controller = new ScheduleController();
             $scheduleController->destroy($_GET['id']);
             break;
+        case 'login':
+            $controller = new UserController();
+            $userController->login();
+            break;
+
+        case 'register':
+            $controller = new UserController();
+            $userController->register();
+            break;
+
+
+
         default:
             $homeController = new HomeController();
             $homeController->index();

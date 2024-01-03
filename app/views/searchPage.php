@@ -35,8 +35,6 @@ ob_start();
 <div id="filteredResults">
     <!-- Div to display filtered results -->
     <div class="container mt-5">
-
-
         <?php if (!empty($availableSchedules)): ?>
             <div class="row">
                 <?php foreach ($availableSchedules as $schedule): ?>

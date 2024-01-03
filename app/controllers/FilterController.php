@@ -9,13 +9,15 @@ class FilterController
             $startDate = isset($_POST['startDate']) ? new DateTime($_POST['startDate']) : null;
             $endDate = isset($_POST['endDate']) ? new DateTime($_POST['endDate']) : null;
             $com = isset($_POST['Company']) ? $_POST['Company'] : null;
-            $price = isset($_POST['Price']) ? $_POST['Price'] : null;
+            $price = isset($_POST['Price']
+                ) ? $_POST['Price'] : null;
             $timeOfDay = isset($_POST['TimeOfDay']) ? $_POST['TimeOfDay'] : null;
 
             $departureCityID = $_SESSION['departureCity'];
             $arrivalCityID = $_SESSION['arrivalCity'];
             $travelDate = $_SESSION['travelDate'];
             $numPeople = $_SESSION['numPeople'];
+            print_r($_SESSION['departureCity']);
             $scheduleDAO = new ScheduleDAO();
 
             $availableSchedules = $scheduleDAO->getScheduelByEndCityStartCity($travelDate, $arrivalCityID, $departureCityID, $numPeople);
