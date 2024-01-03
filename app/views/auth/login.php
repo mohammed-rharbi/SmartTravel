@@ -7,11 +7,11 @@ ob_start();
 </h2>
 
 <form method="post" action="index.php?action=login">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required>
+    <label>Email:</label>
+    <input type="email" name="email" required>
     <br>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
+    <label>Password:</label>
+    <input type="password" name="password" required>
     <br>
     <button type="submit">Login</button>
 </form>

@@ -11,7 +11,7 @@ CREATE TABLE Company (
     companyImage VARCHAR(255)
 );
 -- Table for Users
-CREATE TABLE User (
+CREATE TABLE Users (
     userID INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(255),
     password VARCHAR(255),
@@ -19,8 +19,8 @@ CREATE TABLE User (
     isActive BOOLEAN,
     registrationDate DATE,
     role ENUM('Admin', 'Client', 'Operator') DEFAULT 'Client',
-    companyID int,
-    FOREIGN KEY (userID) REFERENCES company(companyID)
+    companyID INT,
+    FOREIGN KEY (companyID) REFERENCES Company(companyID)
 );
 -- Table for Cities
 CREATE TABLE City (
@@ -67,7 +67,7 @@ CREATE TABLE Reservation (
     seatNumber INT,
     reservationDate DATE,
     FOREIGN KEY (travelID) REFERENCES Travel(travelID),
-    FOREIGN KEY (userID) REFERENCES User(userID)
+    FOREIGN KEY (userID) REFERENCES Users(userID) -- Corrected table name
 );
 -- Table for Points
 CREATE TABLE Points (
@@ -75,7 +75,8 @@ CREATE TABLE Points (
     points INT,
     travelID INT,
     reservationID INT,
-    FOREIGN KEY (userID) REFERENCES User(userID),
+    FOREIGN KEY (userID) REFERENCES Users(userID),
+    -- Corrected table name
     FOREIGN KEY (travelID) REFERENCES Travel(travelID),
     FOREIGN KEY (reservationID) REFERENCES Reservation(reservationID)
 );

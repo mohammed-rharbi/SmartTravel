@@ -1,40 +1,47 @@
 <?php
 
 include_once 'DatabaseDAO.php';
-include_once 'UserDAO.php';
-
+include_once 'User.php';
 
 class UserDAO extends DatabaseDAO
 {
-    public function getUserByUsername($username)
+    public function getUserByEmail($email)
     {
-        $query = "SELECT * FROM users WHERE username = :username";
-        $params = [':username' => $username];
-
+        $query = "SELECT * FROM Users WHERE email = :email";
+        $params = [':email' => $email];
         $result = $this->fetch($query, $params);
 
         if ($result) {
-            return new User($result['userID'], $result['username'], $result['password'], $result['email']);
-        } else {
-            return null;
+            return new User(
+                $result['userID'],
+                $result['username'],
+                $result['password'],
+                $result['email'],
+                $result['isActive'],
+                $result['registrationDate'],
+                $result['role'],
+                $result['companyID']
+            );
         }
+        return null;
     }
 
-    public function createUser($username, $password, $email)
+    public function addUser($user)
     {
-        // Hash the password before storing it in the database
-        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-
-        $query = "INSERT INTO users (username, password, email) VALUES (:username, :password, :email)";
+        $query = "INSERT INTO Users (username, password, email, isActive, registrationDate, role, companyID) 
+                  VALUES (:username, :password, :email, :isActive, :registrationDate, :role, :companyID)";
         $params = [
-            ':username' => $username,
-            ':password' => $hashedPassword,
-            ':email' => $email,
+            ':username' => $user->getUsername(),
+            ':password' => $user->getPassword(),
+            ':email' => $user->getEmail(),
+            ':isActive' => $user->isActive(),
+            ':registrationDate' => $user->getRegistrationDate(),
+            ':role' => $user->getRole(),
+            ':companyID' => $user->getCompanyID()
         ];
 
         return $this->execute($query, $params);
     }
-
-    // Add other methods as needed for user management
-    // Example: updateUser, deleteUser, etc.
 }
+
+?>

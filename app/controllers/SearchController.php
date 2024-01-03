@@ -21,7 +21,7 @@ class SearchController
 
                 // Query the database for available schedules based on the form selection
                 $scheduleDAO = new ScheduleDAO();
-                
+
                 // Define the variables before calling the method
                 $date = $_POST['travelDate'];
                 $endCity = $_POST['arrivalCity'];

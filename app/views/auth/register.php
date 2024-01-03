@@ -4,18 +4,21 @@ ob_start();
 ?>
 
 <h2>
-    <?php $title ?>
+    <?php echo $title; ?>
 </h2>
 
 <form method="post" action="index.php?action=register">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required>
+    <label>Username:</label>
+    <input type="text" name="username" required>
     <br>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
+    <label>Email:</label>
+    <input type="email" name="email" required>
     <br>
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required>
+    <label>Password:</label>
+    <input type="password" name="password" required>
+    <br>
+    <label>Full Name:</label>
+    <input type="text" name="fullName" required>
     <br>
     <button type="submit">Register</button>
 </form>

@@ -2,38 +2,66 @@
 
 class User
 {
-    private $userID;
+    private $id;
     private $username;
-    private $password; // Make sure to hash passwords before storing in the database
     private $email;
+    private $password;
+    private $role;
+    private $isActive;
+    private $registrationDate;
+    private $companyID;
 
-    // Add other properties as needed
-
-    public function __construct($userID, $username, $password, $email)
+    public function __construct($id, $username, $email, $password, $role, $isActive, $registrationDate, $companyID)
     {
-        $this->userID = $userID;
+        $this->id = $id;
         $this->username = $username;
-        $this->password = $password;
         $this->email = $email;
+        $this->password = $password;
+        $this->role = $role;
+        $this->isActive = $isActive;
+        $this->registrationDate = $registrationDate;
+        $this->companyID = $companyID;
     }
 
-    // Add getters and setters as needed
-    // Example:
-    public function getUserID()
+    public function getId()
     {
-        return $this->userID;
+        return $this->id;
     }
 
     public function getUsername()
     {
         return $this->username;
     }
-    public function getPassword()
-    {
-        return $this->password;
-    }
+
     public function getEmail()
     {
         return $this->email;
     }
+
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    public function isActive()
+    {
+        return $this->isActive;
+    }
+
+    public function getRegistrationDate()
+    {
+        return $this->registrationDate;
+    }
+    public function getCompanyID()
+    {
+        return $this->companyID;
+    }
 }
+
+?>

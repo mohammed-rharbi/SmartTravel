@@ -11,9 +11,9 @@ ob_start();
 
         <!-- Populate with dynamic data from your database -->
         <?php foreach ($availableSchedules as $schedule): ?>
-            <option value="<?= $schedule->getBusID()->getCompany()->getCompanyID() ?>">
-                <?= $schedule->getBusID()->getCompany()->getCompanyName() ?>
-            </option>
+        <option value="<?= $schedule->getBusID()->getCompany()->getCompanyID() ?>">
+            <?= $schedule->getBusID()->getCompany()->getCompanyName() ?>
+        </option>
         <?php endforeach; ?>
     </select>
     <div class="form-group">
@@ -36,56 +36,56 @@ ob_start();
     <!-- Div to display filtered results -->
     <div class="container mt-5">
         <?php if (!empty($availableSchedules)): ?>
-            <div class="row">
-                <?php foreach ($availableSchedules as $schedule): ?>
-                    <div class="col-md-6 mb-4">
-                        <div class="card">
-                            <?php
+        <div class="row">
+            <?php foreach ($availableSchedules as $schedule): ?>
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <?php
                             $companyID = $schedule->getCompanyID();
                             $companyImage = $schedule->getCompanyImageByID($companyID);
                             ?>
-                            <div class="row no-gutters">
-                                <div class="col-md-4">
-                                    <?php if (!empty($companyImage)): ?>
-                                        <img src="<?= $schedule->getBusID()->getCompany()->getCompanyImage() ?>" class="card-img"
-                                            alt="<?= $schedule->getBusID()->getCompany()->getCompanyImage() ?>c:\xampp\htdocs\BRIF999\imgs">
-                                    <?php else: ?>
-                                        <!-- Default image or placeholder if no image is available -->
-                                        <img src="default_image.jpg" class="card-img" alt="Default Image">
-                                    <?php endif; ?>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Schedule ID:
-                                            <?= $schedule->getScheduleID() ?>
-                                        </h5>
-                                        <p class="card-text">Date:
-                                            <?= $schedule->getDate() ?>
-                                        </p>
-                                        <p class="card-text">Departure Time:
-                                            <?= $schedule->getDepartureTime() ?>
-                                        </p>
-                                        <p class="card-text">Arrival Time:
-                                            <?= $schedule->getArrivalTime() ?>
-                                        </p>
-                                        <p class="card-text">Available Seats:
-                                            <?= $schedule->getAvailableSeats() ?>
-                                        </p>
-                                        <p class="card-text">Company:
-                                            <?= $schedule->getBusID()->getCompany()->getCompanyName() ?>
-                                        </p>
-                                        <p class="card-text">Price:
-                                            <?= $schedule->getPrice() ?>
-                                        </p>
-                                    </div>
-                                </div>
+                    <div class="row no-gutters">
+                        <div class="col-md-4">
+                            <?php if (!empty($companyImage)): ?>
+                            <img src="<?= $schedule->getBusID()->getCompany()->getCompanyImage() ?>" class="card-img"
+                                alt="<?= $schedule->getBusID()->getCompany()->getCompanyImage() ?>c:\xampp\htdocs\BRIF999\imgs">
+                            <?php else: ?>
+                            <!-- Default image or placeholder if no image is available -->
+                            <img src="default_image.jpg" class="card-img" alt="Default Image">
+                            <?php endif; ?>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">Schedule ID:
+                                    <?= $schedule->getScheduleID() ?>
+                                </h5>
+                                <p class="card-text">Date:
+                                    <?= $schedule->getDate() ?>
+                                </p>
+                                <p class="card-text">Departure Time:
+                                    <?= $schedule->getDepartureTime() ?>
+                                </p>
+                                <p class="card-text">Arrival Time:
+                                    <?= $schedule->getArrivalTime() ?>
+                                </p>
+                                <p class="card-text">Available Seats:
+                                    <?= $schedule->getAvailableSeats() ?>
+                                </p>
+                                <p class="card-text">Company:
+                                    <?= $schedule->getBusID()->getCompany()->getCompanyName() ?>
+                                </p>
+                                <p class="card-text">Price:
+                                    <?= $schedule->getPrice() ?>
+                                </p>
                             </div>
                         </div>
                     </div>
-                <?php endforeach; ?>
+                </div>
             </div>
+            <?php endforeach; ?>
+        </div>
         <?php else: ?>
-            <p class="text-center">No available schedules found for the selected route and date.</p>
+        <p class="text-center">No available schedules found for the selected route and date.</p>
         <?php endif; ?>
     </div>
 </div>
@@ -93,41 +93,41 @@ ob_start();
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $('#filterButton').on('click', function () {
-            // Serialize the form data
-            var formData = $('#filterForm').serialize();
+$(document).ready(function() {
+    $('#filterButton').on('click', function() {
+        // Serialize the form data
+        var formData = $('#filterForm').serialize();
 
-            // Make an Ajax request
-            $.ajax({
-                type: 'POST',
-                url: 'index.php?action=filterPage', // Update the URL to your actual endpoint
-                data: formData,
-                success: function (data) {
-                    // Update the content of the div with the filtered results
-                    $('#filteredResults').html(data);
-                }
-            });
-        });
-
-        // Reset company filter when "Show All Schedules" is selected
-        $('#departureCity').on('change', function () {
-            if ($(this).val() === "") {
-                // Make an Ajax request to get all schedules without company filter
-                $.ajax({
-                    type: 'POST',
-                    url: 'index.php?action=filterPage', // Update the URL to your actual endpoint
-                    data: {
-                        companyFilter: ''
-                    },
-                    success: function (data) {
-                        // Update the content of the div with all schedules
-                        $('#filteredResults').html(data);
-                    }
-                });
+        // Make an Ajax request
+        $.ajax({
+            type: 'POST',
+            url: 'index.php?action=filterPage', // Update the URL to your actual endpoint
+            data: formData,
+            success: function(data) {
+                // Update the content of the div with the filtered results
+                $('#filteredResults').html(data);
             }
         });
     });
+
+    // Reset company filter when "Show All Schedules" is selected
+    $('#departureCity').on('change', function() {
+        if ($(this).val() === "") {
+            // Make an Ajax request to get all schedules without company filter
+            $.ajax({
+                type: 'POST',
+                url: 'index.php?action=filterPage', // Update the URL to your actual endpoint
+                data: {
+                    companyFilter: ''
+                },
+                success: function(data) {
+                    // Update the content of the div with all schedules
+                    $('#filteredResults').html(data);
+                }
+            });
+        }
+    });
+});
 </script>
 
 <?php $content = ob_get_clean(); ?>
