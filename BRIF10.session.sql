@@ -4,21 +4,28 @@ DROP DATABASE IF EXISTS SmartTravelv2;
 CREATE DATABASE SmartTravelv2;
 -- Use the database
 USE SmartTravelv2;
--- Table for Users
-CREATE TABLE User (
-    userID INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(255)
-);
--- Table for Cities
-CREATE TABLE City (
-    cityID INT PRIMARY KEY AUTO_INCREMENT,
-    cityName VARCHAR(255)
-);
 -- Table for Companies
 CREATE TABLE Company (
     companyID INT PRIMARY KEY AUTO_INCREMENT,
     companyName VARCHAR(255),
     companyImage VARCHAR(255)
+);
+-- Table for Users
+CREATE TABLE User (
+    userID INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(255),
+    password VARCHAR(255),
+    email VARCHAR(255),
+    isActive BOOLEAN,
+    registrationDate DATE,
+    role ENUM('Admin', 'Client', 'Operator') DEFAULT 'Client',
+    companyID int,
+    FOREIGN KEY (userID) REFERENCES company(companyID)
+);
+-- Table for Cities
+CREATE TABLE City (
+    cityID INT PRIMARY KEY AUTO_INCREMENT,
+    cityName VARCHAR(255)
 );
 -- Table for Travels
 CREATE TABLE Travel (
@@ -255,16 +262,16 @@ VALUES (3, 4, '180 km', '2:15:00'),
 -- Inezgane to Casablanca
 -- Insert companies
 INSERT INTO Company (companyName, companyImage)
-VALUES ('Supratours', "bus.jpg"),
-    ('SATAS', "bus.jpg"),
-    ('CTM', "bus.jpg"),
-    ('Tramesa', "bus.jpg"),
-    ('Trans Ghazala', "bus.jpg"),
-    ('Voyages Ennajah', "bus.jpg"),
-    ('Rakar', "bus.jpg"),
-    ('Kamel Transports', "bus.jpg"),
-    ('Transavia', "bus.jpg"),
-    ('Tarik Express', "bus.jpg");
+VALUES ('CTM', "imgs/ctm.jpg"),
+    ('TajVoyage', "imgs/taj.jpg"),
+    ('Bismi Allah Salama', "imgs/bismilah.jpg"),
+    ('SAT First', "imgs/SAT_First.jpg"),
+    ('Trans Ghazala', "imgs/ghazala.jpg"),
+    ('Sotram', 'imgs/sotram.jpg'),
+    ('Bab Allah', 'imgs/BabAllah.jpg'),
+    ('GloBus Trans', 'imgs/GloBus.jpg'),
+    ('Supratours', 'imgs/Supratours.jpg'),
+    ('Jana Viajes', 'imgs/JanaViajes.jpg');
 -- Insert data into the Bus table for buses of the new companies
 INSERT INTO Bus (
         busID,
