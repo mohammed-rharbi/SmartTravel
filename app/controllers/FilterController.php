@@ -12,7 +12,6 @@ class FilterController
             $price = isset($_POST['Price']
                 ) ? $_POST['Price'] : null;
             $timeOfDay = isset($_POST['TimeOfDay']) ? $_POST['TimeOfDay'] : null;
-
             $departureCityID = $_SESSION['departureCity'];
             $arrivalCityID = $_SESSION['arrivalCity'];
             $travelDate = $_SESSION['travelDate'];
@@ -50,7 +49,7 @@ class FilterController
         switch ($selectedTimeOfDay) {
             case 'morning':
                 return $scheduleTime >= new DateTime('06:00:00') && $scheduleTime < new DateTime('12:00:00');
-            case 'evening':
+            case 'afternoon':
                 return $scheduleTime >= new DateTime('12:00:00') && $scheduleTime < new DateTime('18:00:00');
             case 'night':
                 return $scheduleTime >= new DateTime('18:00:00') || $scheduleTime < new DateTime('06:00:00');

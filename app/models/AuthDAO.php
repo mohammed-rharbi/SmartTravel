@@ -1,9 +1,9 @@
 <?php
 
 include_once 'DatabaseDAO.php';
-include_once 'User.php';
+include_once 'Auth.php';
 
-class UserDAO extends DatabaseDAO
+class AuthDAO extends DatabaseDAO
 {
     public function getUserByEmail($email)
     {
@@ -12,14 +12,14 @@ class UserDAO extends DatabaseDAO
         $result = $this->fetch($query, $params);
 
         if ($result) {
-            return new User(
+            return new Auth(
                 $result['userID'],
                 $result['username'],
-                $result['password'],
                 $result['email'],
+                $result['password'],
+                $result['role'],
                 $result['isActive'],
                 $result['registrationDate'],
-                $result['role'],
                 $result['companyID']
             );
         }
@@ -32,7 +32,7 @@ class UserDAO extends DatabaseDAO
                   VALUES (:username, :password, :email, :isActive, :registrationDate, :role, :companyID)";
         $params = [
             ':username' => $user->getUsername(),
-            ':password' => $user->getPassword(),
+            ':password' => $user->getPassword(), // Hashed password
             ':email' => $user->getEmail(),
             ':isActive' => $user->isActive(),
             ':registrationDate' => $user->getRegistrationDate(),

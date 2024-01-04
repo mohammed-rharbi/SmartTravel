@@ -1,6 +1,6 @@
 <?php
 
-class User
+class Auth
 {
     private $id;
     private $username;
@@ -43,7 +43,6 @@ class User
         return $this->password;
     }
 
-
     public function getRole()
     {
         return $this->role;
@@ -58,10 +57,12 @@ class User
     {
         return $this->registrationDate;
     }
+
     public function getCompanyID()
     {
         return $this->companyID;
     }
+    // setters if needed
 }
 
 ?>

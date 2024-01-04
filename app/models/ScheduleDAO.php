@@ -118,6 +118,7 @@ class ScheduleDAO extends DatabaseDAO
 
 
 
+
         $params = [
             ':date' => $date,
             ':endCity' => $endCity,

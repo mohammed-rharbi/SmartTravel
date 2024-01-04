@@ -76,7 +76,6 @@ CREATE TABLE Points (
     travelID INT,
     reservationID INT,
     FOREIGN KEY (userID) REFERENCES Users(userID),
-    -- Corrected table name
     FOREIGN KEY (travelID) REFERENCES Travel(travelID),
     FOREIGN KEY (reservationID) REFERENCES Reservation(reservationID)
 );
@@ -273,6 +272,42 @@ VALUES ('CTM', "imgs/ctm.jpg"),
     ('GloBus Trans', 'imgs/GloBus.jpg'),
     ('Supratours', 'imgs/Supratours.jpg'),
     ('Jana Viajes', 'imgs/JanaViajes.jpg');
+INSERT INTO Users (
+        username,
+        password,
+        email,
+        isActive,
+        registrationDate,
+        role,
+        companyID
+    )
+VALUES (
+        'admin',
+        'admin',
+        'admin@test.com',
+        1,
+        '2024-02-01',
+        'Admin',
+        NULL
+    ),
+    (
+        'client',
+        'client',
+        'client@test.com',
+        1,
+        '2024-02-01',
+        'Client',
+        NULL
+    ),
+    (
+        'operator',
+        'operator',
+        'operator@test.com',
+        1,
+        '2024-02-01',
+        'Operator',
+        1
+    );
 -- Insert data into the Bus table for buses of the new companies
 INSERT INTO Bus (
         busID,

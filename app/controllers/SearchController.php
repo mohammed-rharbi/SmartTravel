@@ -1,7 +1,4 @@
 <?php
-
-session_start();
-
 class SearchController
 {
     public function index()
@@ -16,19 +13,20 @@ class SearchController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Handle Search Form submission
-            if (isset($_POST['departureCity'], $_POST['arrivalCity'], $_POST['travelDate'], $_POST['numPeople'])) {
-                // Handle search form submission, similar to your existing code
+            if (isset($_POST['departureCity'], $_POST['arrivalCity'], $_POST['numPeople'])) {
+                // Check if travel date is empty or a past date
+                $date = (!empty($_POST['travelDate']) && strtotime($_POST['travelDate']) >= strtotime(date('Y-m-d'))) ?
+                    $_POST['travelDate'] : date('Y-m-d');
+
+                // Handle other form submissions as before
 
                 // Query the database for available schedules based on the form selection
                 $scheduleDAO = new ScheduleDAO();
 
                 // Define the variables before calling the method
-                $date = $_POST['travelDate'];
                 $endCity = $_POST['arrivalCity'];
                 $startCity = $_POST['departureCity'];
                 $places = $_POST['numPeople'];
-
-
                 $availableSchedules = $scheduleDAO->getScheduelByEndCityStartCity($date, $endCity, $startCity, $places);
 
                 // Handle Company Filter
