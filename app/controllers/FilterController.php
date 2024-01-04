@@ -12,11 +12,12 @@ class FilterController
             $price = isset($_POST['Price']
                 ) ? $_POST['Price'] : null;
             $timeOfDay = isset($_POST['TimeOfDay']) ? $_POST['TimeOfDay'] : null;
+
             $departureCityID = $_SESSION['departureCity'];
             $arrivalCityID = $_SESSION['arrivalCity'];
             $travelDate = $_SESSION['travelDate'];
             $numPeople = $_SESSION['numPeople'];
-            print_r($_SESSION['departureCity']);
+
             $scheduleDAO = new ScheduleDAO();
 
             $availableSchedules = $scheduleDAO->getScheduelByEndCityStartCity($travelDate, $arrivalCityID, $departureCityID, $numPeople);
