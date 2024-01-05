@@ -10,13 +10,17 @@ include_once __DIR__ . '/app/controllers/AuthController.php';
 include_once __DIR__ . '/app/controllers/AdminController.php';
 include_once __DIR__ . '/app/controllers/ClientController.php';
 include_once __DIR__ . '/app/controllers/OperatorController.php';
+include_once __DIR__ . '/app/controllers/UserController.php';
 include_once __DIR__ . '/app/models/Bus.php';
+include_once __DIR__ . '/app/models/users.php';
 include_once __DIR__ . '/app/models/BusDAO.php';
 include_once __DIR__ . '/app/models/Route.php';
 include_once __DIR__ . '/app/models/RouteDAO.php';
 include_once __DIR__ . '/app/models/Schedule.php';
 include_once __DIR__ . '/app/models/ScheduleDAO.php';
 include_once __DIR__ . '/app/models/AuthDAO.php';
+include_once __DIR__ . '/app/models/usersDAO.php';
+include_once __DIR__ . '/app/models/companyDAO.php';
 session_start();
 // Routing.
 if (isset($_GET['action'])) {
@@ -28,6 +32,7 @@ if (isset($_GET['action'])) {
     $adminController = new AdminController();
     $clientController = new ClientController();
     $operatorController = new OperatorController();
+
 
     switch ($action) {
         case '/':
@@ -158,6 +163,22 @@ if (isset($_GET['action'])) {
         case 'operatorPage':
             $controller = new OperatorController();
             $operatorController->index();
+            break;
+        case 'usersindex':
+            $userController = new UserController();
+            $userController->getAllUsers();
+            break;
+        case 'showAddUser':
+            $userController = new UserController();
+            $userController->ShowAddUser();
+            break;
+        case 'addUser':
+            $userController = new UserController();
+            $userController->addUser();
+            break;
+        case 'disable':
+            $userController = new UserController();
+            $userController->disableUser();
             break;
 
         default:

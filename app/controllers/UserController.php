@@ -1,13 +1,10 @@
 <?php
-include_once 'model/usersDAO.php';
-include_once 'model/companyDAO.php';
-
 class UserController{
 
-    function getAllUserss(){
+    function getAllUsers(){
         $users = new usersDAO();
         $usersDATA = $users->getAllUsers();
-        include 'view\horaireView.php';
+        include 'app/views/usersView.php';
     }
 
     function addUser(){
@@ -17,18 +14,20 @@ class UserController{
         $isActive = $_POST["isActive"] ; 
         $registrationDate = $_POST["registrationDate"] ; 
         $role = $_POST["role"] ; 
-        $companyID = $_POST["companyID"] ; 
+        if($_POST["companyID"]== 'NULL'){
+            $companyID ='';
+        }else{
+            $companyID = $_POST["companyID"] ; 
+        }
         $users = new usersDAO();
         $usersDATA = $users->addUser($username, $password, $email, $isActive, $registrationDate, $role, $companyID);
-        include('view/addUser.php');
+        include('app/views/usersView.php');
     }
     
     function ShowAddUser(){
-        $usersDAO = new usersDAO();
-        $usersDATA = $usersDAO->getAllUsers();
         $companyDAO = new companyDAO();
         $companyDATA = $companyDAO->getAllCompanies();
-        include('view/addUser.php');
+        include('app/views/addUser.php');
     }
     
     function updateForm(){
@@ -39,7 +38,7 @@ class UserController{
         // $routeDATA = $routeDAO->getAllRoute();
         // $horaire = new horaireDAO();
         // $horaireDATA = $horaire->getHoraireById($id);
-        include 'view/updateHoraire.php';
+        include 'app/views/updateHoraire.php';
     }
 
     function updateUser(){
@@ -53,7 +52,7 @@ class UserController{
         $companyID = $_POST["companyID"] ; 
         $user = new usersDAO();
         $usersDATA = $user->UpdateUser($username, $password, $email, $isActive, $registrationDate, $role, $companyID);
-        include 'view/updateRoute.php';
+        include 'app/views/updateRoute.php';
     }
     // function searchHoraire(){
     //     $vDepart = $_POST["vDepart"] ; 
