@@ -4,10 +4,7 @@ ob_start();
 ?>
 
 <div class="container mt-5">
-    <h2>
-        <?php echo $title; ?>
-    </h2>
-    <form action="index.php?action=login_store" method="post" class="mt-3">
+    <form action="index.php?action=login" method="post">
         <div class="mb-3">
             <label for="email" class="form-label">Email:</label>
             <input type="email" name="email" class="form-control" required>
@@ -18,7 +15,10 @@ ob_start();
         </div>
         <button type="submit" class="btn btn-primary">Login</button>
     </form>
-    <p class="mt-3">Forgot your password? <a href="index.php?action=forget_password">Reset it here</a>.</p>
+
+    <div class="mt-3">
+        <p>Forgot your password? <a href="index.php?action=forgot_password">Reset it here</a>.</p>
+    </div>
 </div>
 
 <?php $content = ob_get_clean(); ?>

@@ -127,42 +127,41 @@ if (isset($_GET['action'])) {
             break;
         case 'login':
             $controller = new AuthController();
-            $controller->showLoginForm();
-            break;
-        case 'login_store':
-            $controller = new AuthController();
             $controller->login();
             break;
         case 'register':
             $controller = new AuthController();
             $controller->showRegisterForm();
             break;
-        case 'logout':
-            $controller = new AuthController();
-            $controller->logout();
-            break;
+
         case 'register_store':
             $controller = new AuthController();
             $controller->register();
             break;
-        case 'forget_password':
+
+        case 'forgot_password':
             $controller = new AuthController();
             $controller->showForgotPasswordForm();
             break;
 
-        case 'forget_password_store':
+        case 'forgot_password_store':
             $controller = new AuthController();
             $controller->forgotPassword();
             break;
 
         case 'reset_password':
-            $controller = new AuthController();
-            $controller->showResetPasswordForm();
-            break;
-
+            // The token is usually passed as a parameter in the URL
+            if (isset($_GET['token'])) {
+                $token = $_GET['token'];
+                $controller = new AuthController();
+                $controller->resetPassword($token);
+            } else {
+                // Handle the case where the token is missing
+                echo "Token is missing.";
+            }
         case 'reset_password_store':
             $controller = new AuthController();
-            $controller->resetPassword($_GET['token']);
+            $controller->resetPasswordStore();
             break;
 
         case 'adminPage':

@@ -1,7 +1,4 @@
 <?php
-include_once 'model/usersDAO.php';
-include_once 'model/companyDAO.php';
-
 class UserController
 {
 
@@ -14,17 +11,18 @@ class UserController
     }
 
 
-    function addUser(){
-        $username = $_POST["username"] ; 
-        $password = $_POST["password"] ; 
-        $email = $_POST["email"] ; 
-        $isActive = $_POST["isActive"] ; 
-        $registrationDate = $_POST["registrationDate"] ; 
-        $role = $_POST["role"] ; 
-        if($_POST["companyID"]== 'NULL'){
-            $companyID ='';
-        }else{
-            $companyID = $_POST["companyID"] ; 
+    function addUser()
+    {
+        $username = $_POST["username"];
+        $password = $_POST["password"];
+        $email = $_POST["email"];
+        $isActive = $_POST["isActive"];
+        $registrationDate = $_POST["registrationDate"];
+        $role = $_POST["role"];
+        if ($_POST["companyID"] == 'NULL') {
+            $companyID = '';
+        } else {
+            $companyID = $_POST["companyID"];
         }
 
         $users = new usersDAO();
@@ -32,7 +30,7 @@ class UserController
         include('app/views/usersView.php');
     }
 
-    
+
 
 
     function ShowAddUser()

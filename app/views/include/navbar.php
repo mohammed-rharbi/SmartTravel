@@ -11,15 +11,15 @@
             $role = $_SESSION['user']->getRole();
             ?>
 
-            <!-- Display user role and welcome message -->
-            <span class="navbar-text">
-                Welcome,
-                <?php echo $role; ?>!
-            </span>
+        <!-- Display user role and welcome message -->
+        <span class="navbar-text">
+            Welcome,
+            <?php echo $role; ?>!
+        </span>
 
-            <!-- Navbar links based on user role -->
-            <ul class="navbar-nav ml-auto">
-                <?php
+        <!-- Navbar links based on user role -->
+        <ul class="navbar-nav ml-auto">
+            <?php
                 switch ($role) {
                     case 'Admin':
                         echo "<li class='nav-item'><a class='nav-link' href='index.php?action=admin'>Admin Dashboard</a></li>";
@@ -35,17 +35,17 @@
                         break;
                 }
                 ?>
-                <!-- Common links for all roles -->
-                <li class='nav-item'><a class='nav-link' href='index.php?action=logout'>Logout</a></li>
-            </ul>
+            <!-- Common links for all roles -->
+            <li class='nav-item'><a class='nav-link' href='index.php?action=logout'>Logout</a></li>
+        </ul>
 
         <?php } else { ?>
 
-            <!-- Display login and register links if the user is not logged in -->
-            <ul class="navbar-nav ml-auto">
-                <li class='nav-item'><a class='nav-link' href='index.php?action=login'>Login</a></li>
-                <li class='nav-item'><a class='nav-link' href='index.php?action=register'>Register</a></li>
-            </ul>
+        <!-- Display login and register links if the user is not logged in -->
+        <ul class="navbar-nav ml-auto">
+            <li class='nav-item'><a class='nav-link' href='index.php?action=login'>Login</a></li>
+            <li class='nav-item'><a class='nav-link' href='index.php?action=register'>Register</a></li>
+        </ul>
 
         <?php } ?>
     </div>

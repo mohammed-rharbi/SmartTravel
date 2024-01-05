@@ -4,7 +4,7 @@ ob_start();
 ?>
 
 <div class="container mt-5">
-    <form action="index.php?action=register_store" method="post">
+    <form action="index.php?action=register" method="post">
         <div class="mb-3">
             <label for="username" class="form-label">Username:</label>
             <input type="text" name="username" class="form-control" required>

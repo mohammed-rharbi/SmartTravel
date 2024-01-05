@@ -57,7 +57,6 @@ class AuthDAO extends DatabaseDAO
 
         return $this->execute($query, $parameters);
     }
-
     public function getUserIdByToken($token)
     {
         $query = "SELECT userID FROM Users WHERE resetToken = :token";
@@ -65,7 +64,12 @@ class AuthDAO extends DatabaseDAO
 
         $result = $this->fetch($query, $parameters);
 
-        return ($result) ? $result['userID'] : null;
+        if ($result) {
+            return $result['userID'];
+        } else {
+            error_log("Token not found: $token");
+            return null;
+        }
     }
 
 

@@ -28,7 +28,7 @@ class SearchController
                 $_SESSION['travelDate'] = $date;
                 $_SESSION['numPeople'] = $_POST['numPeople'];
                 $availableSchedules = $scheduleDAO->getScheduelByEndCityStartCity($date, $endCity, $startCity, $places);
-                print_r($_SESSION);
+
                 // Handle Company Filter
                 if (isset($_POST['companyFilter'])) {
                     $selectedCompanyID = $_POST['companyFilter'];

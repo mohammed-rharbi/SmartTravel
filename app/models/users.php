@@ -1,6 +1,7 @@
 <?php
 
-class Users {
+class Users
+{
     private $id;
     private $userName;
     private $password;
@@ -9,7 +10,8 @@ class Users {
     private $registrationDate;
     private $role;
 
-    public function __construct($id, $userName, $password, $email, $isActive, $registrationDate, $role) {
+    public function __construct($id, $userName, $password, $email, $isActive, $registrationDate, $role)
+    {
         $this->id = $id;
         $this->userName = $userName;
         $this->password = $password;
@@ -19,31 +21,38 @@ class Users {
         $this->role = $role;
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getUserName() {
+    public function getUserName()
+    {
         return $this->userName;
     }
 
-    public function getPassword() {
+    public function getPassword()
+    {
         return $this->password;
     }
 
-    public function getEmail() {
+    public function getEmail()
+    {
         return $this->email;
     }
 
-    public function getIsActive() {
+    public function getIsActive()
+    {
         return $this->isActive;
     }
 
-    public function getRegistrationDate() {
+    public function getRegistrationDate()
+    {
         return $this->registrationDate;
     }
 
-    public function getRole() {
+    public function getRole()
+    {
         return $this->role;
     }
 }

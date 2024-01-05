@@ -2,12 +2,8 @@
 $title = "Forget Password";
 ob_start();
 ?>
-
 <div class="container mt-5">
-    <h2>
-        <?php echo $title; ?>
-    </h2>
-    <form action="index.php?action=forget_password_store" method="post" class="mt-3">
+    <form action="index.php?action=forgot_password_store" method="post">
         <div class="mb-3">
             <label for="email" class="form-label">Email:</label>
             <input type="email" name="email" class="form-control" required>
