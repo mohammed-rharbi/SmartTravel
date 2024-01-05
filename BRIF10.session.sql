@@ -27,18 +27,7 @@ CREATE TABLE City (
     cityID INT PRIMARY KEY AUTO_INCREMENT,
     cityName VARCHAR(255)
 );
--- Table for Travels
-CREATE TABLE Travel (
-    travelID INT PRIMARY KEY AUTO_INCREMENT,
-    sourceCityID INT,
-    destinationCityID INT,
-    departureTime TIME,
-    arrivalTime TIME,
-    price FLOAT,
-    distance VARCHAR(255),
-    FOREIGN KEY (sourceCityID) REFERENCES City(cityID),
-    FOREIGN KEY (destinationCityID) REFERENCES City(cityID)
-);
+
 -- Table for Buses
 CREATE TABLE Bus (
     busID INT PRIMARY KEY AUTO_INCREMENT,
