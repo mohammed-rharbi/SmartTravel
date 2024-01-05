@@ -19,8 +19,16 @@ CREATE TABLE Users (
     isActive BOOLEAN,
     registrationDate DATE,
     role ENUM('Admin', 'Client', 'Operator') DEFAULT 'Client',
+    resetToken VARCHAR(255) DEFAULT NULL,
     companyID INT,
     FOREIGN KEY (companyID) REFERENCES Company(companyID)
+);
+CREATE TABLE Sessions (
+    sessionID INT PRIMARY KEY AUTO_INCREMENT,
+    userID INT,
+    token VARCHAR(255),
+    expirationDate DATETIME,
+    FOREIGN KEY (userID) REFERENCES Users(userID)
 );
 -- Table for Cities
 CREATE TABLE City (

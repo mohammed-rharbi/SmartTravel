@@ -1,5 +1,4 @@
 <?php
-
 class Auth
 {
     private $id;
@@ -10,8 +9,9 @@ class Auth
     private $isActive;
     private $registrationDate;
     private $companyID;
+    private $resetToken;
 
-    public function __construct($id, $username, $email, $password, $role, $isActive, $registrationDate, $companyID)
+    public function __construct($id, $username, $email, $password, $role, $isActive, $registrationDate, $companyID, $resetToken = null)
     {
         $this->id = $id;
         $this->username = $username;
@@ -21,8 +21,8 @@ class Auth
         $this->isActive = $isActive;
         $this->registrationDate = $registrationDate;
         $this->companyID = $companyID;
+        $this->resetToken = $resetToken;
     }
-
     public function getId()
     {
         return $this->id;
@@ -37,12 +37,11 @@ class Auth
     {
         return $this->email;
     }
-
+    // Getter for password hash
     public function getPassword()
     {
         return $this->password;
     }
-
     public function getRole()
     {
         return $this->role;
@@ -62,7 +61,10 @@ class Auth
     {
         return $this->companyID;
     }
-    // setters if needed
+    public function getResetToken()
+    {
+        return $this->resetToken;
+    }
+    // Setters
 }
-
 ?>
