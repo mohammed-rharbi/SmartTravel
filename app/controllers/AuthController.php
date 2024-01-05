@@ -119,15 +119,15 @@ class AuthController
         try {
             // Set up your SMTP configuration
             $mail->isSMTP();
-            $mail->Host = 'boukhari.wail001@gmail.com';
+            $mail->Host = 'smtp.gmail.com';
             $mail->Port = 587;
             $mail->SMTPSecure = 'tls';
             $mail->SMTPAuth = true;
-            $mail->Username = 'test';
-            $mail->Password = 'test';
+            $mail->Username = 'your_username';
+            $mail->Password = 'your_password';
 
             // Set up email parameters
-            $mail->setFrom('boukhari.wail001@gmail.com', 'wail boukhari');
+            $mail->setFrom('your_email@example.com', 'Your Name');
             $mail->addAddress($to);
             $mail->Subject = 'Password Reset';
             $mail->Body = "Click the following link to reset your password: $resetLink";

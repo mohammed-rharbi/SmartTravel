@@ -67,6 +67,8 @@ class AuthDAO extends DatabaseDAO
 
         return ($result) ? $result['userID'] : null;
     }
+
+
 }
 
 ?>

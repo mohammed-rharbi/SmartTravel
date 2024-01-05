@@ -35,7 +35,6 @@ CREATE TABLE City (
     cityID INT PRIMARY KEY AUTO_INCREMENT,
     cityName VARCHAR(255)
 );
-
 -- Table for Buses
 CREATE TABLE Bus (
     busID INT PRIMARY KEY AUTO_INCREMENT,

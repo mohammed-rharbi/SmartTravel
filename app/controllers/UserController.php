@@ -2,36 +2,41 @@
 include_once 'model/usersDAO.php';
 include_once 'model/companyDAO.php';
 
-class UserController{
+class UserController
+{
 
-    function getAllUserss(){
+    function getAllUserss()
+    {
         $users = new usersDAO();
         $usersDATA = $users->getAllUsers();
         include 'view\horaireView.php';
     }
 
-    function addUser(){
-        $username = $_POST["username"] ; 
-        $password = $_POST["password"] ; 
-        $email = $_POST["email"] ; 
-        $isActive = $_POST["isActive"] ; 
-        $registrationDate = $_POST["registrationDate"] ; 
-        $role = $_POST["role"] ; 
-        $companyID = $_POST["companyID"] ; 
+    function addUser()
+    {
+        $username = $_POST["username"];
+        $password = $_POST["password"];
+        $email = $_POST["email"];
+        $isActive = $_POST["isActive"];
+        $registrationDate = $_POST["registrationDate"];
+        $role = $_POST["role"];
+        $companyID = $_POST["companyID"];
         $users = new usersDAO();
         $usersDATA = $users->addUser($username, $password, $email, $isActive, $registrationDate, $role, $companyID);
         include('view/addUser.php');
     }
-    
-    function ShowAddUser(){
+
+    function ShowAddUser()
+    {
         $usersDAO = new usersDAO();
         $usersDATA = $usersDAO->getAllUsers();
         $companyDAO = new companyDAO();
         $companyDATA = $companyDAO->getAllCompanies();
         include('view/addUser.php');
     }
-    
-    function updateForm(){
+
+    function updateForm()
+    {
         $id = $_GET['id'];
         $usersDAO = new usersDAO();
         $usersDATA = $usersDAO->getAllUsers();
@@ -42,15 +47,16 @@ class UserController{
         include 'view/updateHoraire.php';
     }
 
-    function updateUser(){
+    function updateUser()
+    {
         $id = $_GET['id'];
-        $username = $_POST["username"] ; 
-        $password = $_POST["password"] ; 
-        $email = $_POST["email"] ; 
-        $isActive = $_POST["isActive"] ; 
-        $registrationDate = $_POST["registrationDate"] ; 
-        $role = $_POST["role"] ; 
-        $companyID = $_POST["companyID"] ; 
+        $username = $_POST["username"];
+        $password = $_POST["password"];
+        $email = $_POST["email"];
+        $isActive = $_POST["isActive"];
+        $registrationDate = $_POST["registrationDate"];
+        $role = $_POST["role"];
+        $companyID = $_POST["companyID"];
         $user = new usersDAO();
         $usersDATA = $user->UpdateUser($username, $password, $email, $isActive, $registrationDate, $role, $companyID);
         include 'view/updateRoute.php';
@@ -68,7 +74,8 @@ class UserController{
     //     include 'view/homeUser.php';
     // }
 
-    function disableUser(){
+    function disableUser()
+    {
         $id = $_GET['id'];
         $user = new usersDAO();
         $user->disableUser($id);
