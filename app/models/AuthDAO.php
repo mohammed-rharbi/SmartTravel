@@ -1,5 +1,4 @@
 <?php
-
 include_once 'DatabaseDAO.php';
 include_once 'Auth.php';
 
@@ -16,7 +15,7 @@ class AuthDAO extends DatabaseDAO
                 $result['userID'],
                 $result['username'],
                 $result['email'],
-                $result['password'],
+                $result['password'], // Assuming the plain text password is stored in 'password'
                 $result['role'],
                 $result['isActive'],
                 $result['registrationDate'],
@@ -32,7 +31,7 @@ class AuthDAO extends DatabaseDAO
                   VALUES (:username, :password, :email, :isActive, :registrationDate, :role, :companyID)";
         $params = [
             ':username' => $user->getUsername(),
-            ':password' => $user->getPassword(), // Hashed password
+            ':password' => $user->getPassword(),
             ':email' => $user->getEmail(),
             ':isActive' => $user->isActive(),
             ':registrationDate' => $user->getRegistrationDate(),
@@ -41,6 +40,32 @@ class AuthDAO extends DatabaseDAO
         ];
 
         return $this->execute($query, $params);
+    }
+
+    public function updatePassword($userId, $newPassword)
+    {
+        $query = "UPDATE Users SET password = :password WHERE userID = :userId";
+        $parameters = array(':userId' => $userId, ':password' => $newPassword);
+
+        return $this->execute($query, $parameters);
+    }
+
+    public function updateResetToken($userId, $resetToken)
+    {
+        $query = "UPDATE Users SET resetToken = :resetToken WHERE userID = :userId";
+        $parameters = array(':userId' => $userId, ':resetToken' => $resetToken);
+
+        return $this->execute($query, $parameters);
+    }
+
+    public function getUserIdByToken($token)
+    {
+        $query = "SELECT userID FROM Users WHERE resetToken = :token";
+        $parameters = array(':token' => $token);
+
+        $result = $this->fetch($query, $parameters);
+
+        return ($result) ? $result['userID'] : null;
     }
 }
 
