@@ -10,6 +10,7 @@ ob_start();
             <li class="nav-item"><a class="nav-link" href="index.php?action=routeindex">Route</a></li>
             <li class="nav-item"><a class="nav-link" href="index.php?action=busindex">Bus</a></li>
             <li class="nav-item"><a class="nav-link" href="index.php?action=scheduleindex">Schedule</a></li>
+            <li class="nav-item"><a class="nav-link" href="index.php?action=usersindex">Users</a></li>
         </ul>
     </div>
 </nav>

@@ -58,21 +58,17 @@ CREATE TABLE Route (
 -- Table for Reservations
 CREATE TABLE Reservation (
     reservationID INT PRIMARY KEY AUTO_INCREMENT,
-    travelID INT,
     userID INT,
     seatNumber INT,
     reservationDate DATE,
-    FOREIGN KEY (travelID) REFERENCES Travel(travelID),
     FOREIGN KEY (userID) REFERENCES Users(userID) -- Corrected table name
 );
 -- Table for Points
 CREATE TABLE Points (
     userID INT PRIMARY KEY,
     points INT,
-    travelID INT,
     reservationID INT,
     FOREIGN KEY (userID) REFERENCES Users(userID),
-    FOREIGN KEY (travelID) REFERENCES Travel(travelID),
     FOREIGN KEY (reservationID) REFERENCES Reservation(reservationID)
 );
 -- Table for Schedules
@@ -1305,14 +1301,3 @@ VALUES (
         10,
         22.50
     );
--- Insert data into the Travel table
-INSERT INTO Travel (
-        sourceCityID,
-        destinationCityID,
-        departureTime,
-        arrivalTime,
-        price,
-        distance
-    )
-VALUES (3, 4, '09:30:00', '13:30:00', 25.00, '180 km');
--- (Include all travel details)
