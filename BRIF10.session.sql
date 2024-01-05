@@ -1,11 +1,17 @@
--- Drop the database
+-- Drop the database if it exists
 DROP DATABASE IF EXISTS SmartTravelv2;
 -- Create the database
 CREATE DATABASE SmartTravelv2;
 -- Use the database
 USE SmartTravelv2;
+-- Table for Companies
+CREATE TABLE Company (
+    companyID INT PRIMARY KEY AUTO_INCREMENT,
+    companyName VARCHAR(255),
+    companyImage VARCHAR(255)
+);
 -- Table for Users
-CREATE TABLE User (
+CREATE TABLE Users (
     userID INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(255),
     password VARCHAR(255),
@@ -13,20 +19,21 @@ CREATE TABLE User (
     isActive BOOLEAN,
     registrationDate DATE,
     role ENUM('Admin', 'Client', 'Operator') DEFAULT 'Client',
-    companyID int,
-    FOREIGN KEY (userID) REFERENCES company(companyID)
+    resetToken VARCHAR(255) DEFAULT NULL,
+    companyID INT,
+    FOREIGN KEY (companyID) REFERENCES Company(companyID)
 );
--- Table for Travels
-CREATE TABLE Travel (
-    travelID INT PRIMARY KEY AUTO_INCREMENT,
-    sourceCityID INT,
-    destinationCityID INT,
-    departureTime TIME,
-    arrivalTime TIME,
-    price FLOAT,
-    distance VARCHAR(255),
-    FOREIGN KEY (sourceCityID) REFERENCES City(cityID),
-    FOREIGN KEY (destinationCityID) REFERENCES City(cityID)
+CREATE TABLE Sessions (
+    sessionID INT PRIMARY KEY AUTO_INCREMENT,
+    userID INT,
+    token VARCHAR(255),
+    expirationDate DATETIME,
+    FOREIGN KEY (userID) REFERENCES Users(userID)
+);
+-- Table for Cities
+CREATE TABLE City (
+    cityID INT PRIMARY KEY AUTO_INCREMENT,
+    cityName VARCHAR(255)
 );
 -- Table for Buses
 CREATE TABLE Bus (
@@ -56,7 +63,7 @@ CREATE TABLE Reservation (
     seatNumber INT,
     reservationDate DATE,
     FOREIGN KEY (travelID) REFERENCES Travel(travelID),
-    FOREIGN KEY (userID) REFERENCES User(userID)
+    FOREIGN KEY (userID) REFERENCES Users(userID) -- Corrected table name
 );
 -- Table for Points
 CREATE TABLE Points (
@@ -64,20 +71,9 @@ CREATE TABLE Points (
     points INT,
     travelID INT,
     reservationID INT,
-    FOREIGN KEY (userID) REFERENCES User(userID),
+    FOREIGN KEY (userID) REFERENCES Users(userID),
     FOREIGN KEY (travelID) REFERENCES Travel(travelID),
     FOREIGN KEY (reservationID) REFERENCES Reservation(reservationID)
-);
--- Table for Cities
-CREATE TABLE City (
-    cityID INT PRIMARY KEY AUTO_INCREMENT,
-    cityName VARCHAR(255)
-);
--- Table for Companies
-CREATE TABLE Company (
-    companyID INT PRIMARY KEY AUTO_INCREMENT,
-    companyName VARCHAR(255),
-    companyImage VARCHAR(255)
 );
 -- Table for Schedules
 CREATE TABLE Schedule (
@@ -262,16 +258,52 @@ VALUES (3, 4, '180 km', '2:15:00'),
 -- Inezgane to Casablanca
 -- Insert companies
 INSERT INTO Company (companyName, companyImage)
-VALUES ('Supratours', "bus.jpg"),
-    ('SATAS', "bus.jpg"),
-    ('CTM', "bus.jpg"),
-    ('Tramesa', "bus.jpg"),
-    ('Trans Ghazala', "bus.jpg"),
-    ('Voyages Ennajah', "bus.jpg"),
-    ('Rakar', "bus.jpg"),
-    ('Kamel Transports', "bus.jpg"),
-    ('Transavia', "bus.jpg"),
-    ('Tarik Express', "bus.jpg");
+VALUES ('CTM', "imgs/ctm.jpg"),
+    ('TajVoyage', "imgs/taj.jpg"),
+    ('Bismi Allah Salama', "imgs/bismilah.jpg"),
+    ('SAT First', "imgs/SAT_First.jpg"),
+    ('Trans Ghazala', "imgs/ghazala.jpg"),
+    ('Sotram', 'imgs/sotram.jpg'),
+    ('Bab Allah', 'imgs/BabAllah.jpg'),
+    ('GloBus Trans', 'imgs/GloBus.jpg'),
+    ('Supratours', 'imgs/Supratours.jpg'),
+    ('Jana Viajes', 'imgs/JanaViajes.jpg');
+INSERT INTO Users (
+        username,
+        password,
+        email,
+        isActive,
+        registrationDate,
+        role,
+        companyID
+    )
+VALUES (
+        'admin',
+        'admin',
+        'admin@test.com',
+        1,
+        '2024-02-01',
+        'Admin',
+        NULL
+    ),
+    (
+        'client',
+        'client',
+        'client@test.com',
+        1,
+        '2024-02-01',
+        'Client',
+        NULL
+    ),
+    (
+        'operator',
+        'operator',
+        'operator@test.com',
+        1,
+        '2024-02-01',
+        'Operator',
+        1
+    );
 -- Insert data into the Bus table for buses of the new companies
 INSERT INTO Bus (
         busID,

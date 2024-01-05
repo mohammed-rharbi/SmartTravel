@@ -1,24 +1,26 @@
 <?php
-include_once __DIR__ . '/app/controllers/AdminController.php';
+
 include_once __DIR__ . '/app/controllers/HomeController.php';
 include_once __DIR__ . '/app/controllers/BusController.php';
 include_once __DIR__ . '/app/controllers/RouteController.php';
 include_once __DIR__ . '/app/controllers/ScheduleController.php';
 include_once __DIR__ . '/app/controllers/SearchController.php';
 include_once __DIR__ . '/app/controllers/FilterController.php';
+include_once __DIR__ . '/app/controllers/AuthController.php';
+include_once __DIR__ . '/app/controllers/AdminController.php';
+include_once __DIR__ . '/app/controllers/ClientController.php';
+include_once __DIR__ . '/app/controllers/OperatorController.php';
 include_once __DIR__ . '/app/models/Bus.php';
 include_once __DIR__ . '/app/models/BusDAO.php';
 include_once __DIR__ . '/app/models/Route.php';
 include_once __DIR__ . '/app/models/RouteDAO.php';
 include_once __DIR__ . '/app/models/Schedule.php';
 include_once __DIR__ . '/app/models/ScheduleDAO.php';
-
+include_once __DIR__ . '/app/models/AuthDAO.php';
+session_start();
 // Routing.
 if (isset($_GET['action'])) {
     $action = $_GET['action'];
-    $routeController = new RouteController();
-    $busController = new BusController();
-    $scheduleController = new ScheduleController();
 
     switch ($action) {
         case '/':
@@ -33,54 +35,50 @@ if (isset($_GET['action'])) {
             $controller = new FilterController();
             $controller->index();
             break;
-        case 'admin':
-            $controller = new AdminController();
-            $controller->index();
-            break;
         case 'busindex':
             $controller = new BusController();
-            $busController->index();
+            $controller->index();
             break;
         case 'buscreate':
             $controller = new BusController();
-            $busController->create();
+            $controller->create();
             break;
         case 'busstore':
             $controller = new BusController();
-            $busController->store();
+            $controller->store();
             break;
         case 'busedit':
             $controller = new BusController();
-            $busController->edit($_GET['id']);
+            $controller->edit($_GET['id']);
             break;
         case 'busupdate':
             $controller = new BusController();
-            $busController->update($_GET['id']);
+            $controller->update($_GET['id']);
             break;
         case 'busdelete':
             $controller = new BusController();
-            $busController->delete($_GET['id']);
+            $controller->delete($_GET['id']);
             break;
         case 'busdestroy':
             $controller = new BusController();
-            $busController->destroy($_GET['id']);
+            $controller->destroy($_GET['id']);
             break;
         case 'routeindex':
 
             $controller = new RouteController();
-            $routeController->index();
+            $controller->index();
             break;
         case 'routecreate':
             $controller = new RouteController();
-            $routeController->create();
+            $controller->create();
             break;
         case 'routestore':
             $controller = new RouteController();
-            $routeController->store();
+            $controller->store();
             break;
         case 'routeedit':
             $controller = new RouteController();
-            $routeController->edit($_GET['id']);
+            $controller->edit($_GET['id']);
             break;
         case 'routeupdate':
             $controller = new RouteController();
@@ -88,46 +86,99 @@ if (isset($_GET['action'])) {
             break;
         case 'routedelete':
             $controller = new RouteController();
-            $routeController->delete($_GET['id']);
+            $controller->delete($_GET['id']);
             break;
         case 'routedestroy':
             $controller = new RouteController();
-            $routeController->destroy($_GET['id']);
+            $controller->destroy($_GET['id']);
             break;
         case 'scheduleindex':
             $controller = new ScheduleController();
-            $scheduleController->index();
+            $controller->index();
             break;
         case 'schedulecreate':
             $controller = new ScheduleController();
-            $scheduleController->create();
+            $controller->create();
             break;
         case 'schedulestore':
             $controller = new ScheduleController();
-            $scheduleController->store();
+            $controller->store();
             break;
         case 'scheduleedit':
             $controller = new ScheduleController();
-            $scheduleController->edit($_GET['id']);
+            $controller->edit($_GET['id']);
             break;
         case 'scheduleupdate':
             $controller = new ScheduleController();
-            $scheduleController->update($_GET['id']);
+            $controller->update($_GET['id']);
             break;
         case 'scheduledelete':
             $controller = new ScheduleController();
-            $scheduleController->delete($_GET['id']);
+            $controller->delete($_GET['id']);
             break;
         case 'scheduledestroy':
             $controller = new ScheduleController();
-            $scheduleController->destroy($_GET['id']);
+            $controller->destroy($_GET['id']);
             break;
+        case 'login':
+            $controller = new AuthController();
+            $controller->showLoginForm();
+            break;
+        case 'login_store':
+            $controller = new AuthController();
+            $controller->login();
+            break;
+        case 'register':
+            $controller = new AuthController();
+            $controller->showRegisterForm();
+            break;
+        case 'logout':
+            $controller = new AuthController();
+            $controller->logout();
+            break;
+        case 'register_store':
+            $controller = new AuthController();
+            $controller->register();
+            break;
+        case 'forget_password':
+            $controller = new AuthController();
+            $controller->showForgotPasswordForm();
+            break;
+
+        case 'forget_password_store':
+            $controller = new AuthController();
+            $controller->forgotPassword();
+            break;
+
+        case 'reset_password':
+            $controller = new AuthController();
+            $controller->showResetPasswordForm();
+            break;
+
+        case 'reset_password_store':
+            $controller = new AuthController();
+            $controller->resetPassword($_GET['token']);
+            break;
+
+        case 'adminPage':
+            $controller = new AdminController();
+            $controller->index();
+            break;
+        case 'clientPage':
+            $controller = new ClientController();
+            $controller->index();
+            break;
+        case 'operatorPage':
+            $controller = new OperatorController();
+            $controller->index();
+            break;
+
         default:
-            $homeController = new HomeController();
-            $homeController->index();
+            $controller = new HomeController();
+            $controller->index();
             break;
     }
 } else {
-    $homeController = new HomeController();
-    $homeController->index();
+    $controller = new HomeController();
+    $controller->index();
 }

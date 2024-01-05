@@ -3,7 +3,7 @@
 class Database
 {
     private $host = "localhost"; // Replace with your database host
-    private $dbname = "SmartTravel"; // Replace with your database name
+    private $dbname = "SmartTravelv2"; // Replace with your database name
     private $username = "root"; // Replace with your database username
     private $password = ""; // Replace with your database password
 

@@ -15,7 +15,7 @@ ob_start();
             <!-- Populate with dynamic data from your database -->
             <?php foreach ($Cites->getAllCities() as $city): ?>
                 <option value="<?= $city->getCityID() ?>">
-                    <?= $city->getCityName() . $city->getCityID() ?>
+                    <?= $city->getCityName() ?>
                 </option>
             <?php endforeach; ?>
         </select>
@@ -27,7 +27,7 @@ ob_start();
             <!-- Populate with dynamic data from your database -->
             <?php foreach ($Cites->getAllCities() as $city): ?>
                 <option value="<?= $city->getCityID() ?>">
-                    <?= $city->getCityName() . $city->getCityID() ?>
+                    <?= $city->getCityName() ?>
                 </option>
             <?php endforeach; ?>
         </select>

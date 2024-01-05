@@ -4,75 +4,69 @@ class FilterController
 {
     public function index()
     {
-        if (isset($_SESSION['departureCity']) && isset($_SESSION['arrivalCity']) && isset($_SESSION['travelDate']) && isset($_SESSION['numPeople'])) {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $startDate = new DateTime($_POST['startDate']);
-                $endDate = new DateTime($_POST['endDate']);
-                $com = $_POST['Company'];
-                $price = $_POST['Price'];
-                $departureCityID = $_SESSION['departureCity'];
-                $arrivalCityID = $_SESSION['arrivalCity'];
-                $travelDate = $_SESSION['travelDate'];
-                $numPeople = $_SESSION['numPeople'];
-                $scheduleDAO = new ScheduleDAO();
-                // Define the variables before calling the method
-                $date = $travelDate;
-                $endCity = $arrivalCityID;
-                $startCity = $departureCityID;
-                $places = $numPeople;
+        if ($this->isValidSession() && $_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Check if the keys are set in the $_POST array
+            $startDate = isset($_POST['startDate']) ? new DateTime($_POST['startDate']) : null;
+            $endDate = isset($_POST['endDate']) ? new DateTime($_POST['endDate']) : null;
+            $com = isset($_POST['Company']) ? $_POST['Company'] : null;
+            $price = isset($_POST['Price']
+                ) ? $_POST['Price'] : null;
+            $timeOfDay = isset($_POST['TimeOfDay']) ? $_POST['TimeOfDay'] : null;
 
+            $departureCityID = $_SESSION['departureCity'];
+            $arrivalCityID = $_SESSION['arrivalCity'];
+            $travelDate = $_SESSION['travelDate'];
+            $numPeople = $_SESSION['numPeople'];
 
-                $availableSchedules = $scheduleDAO->getScheduelByEndCityStartCity($date, $endCity, $startCity, $places);
-                $cm = array();
-                if ($price && $com && ($startDate && $endDate)) {
-                    foreach ($availableSchedules as $availabel) {
-                        $scheduleDate = new DateTime($availabel->getDate());
-                        if ($availabel->getBusID()->getCompany()->getCompanyID() == $com && $availabel->getPrice() <= $price && $startDate <= $scheduleDate && $endDate >= $scheduleDate) {
+            $scheduleDAO = new ScheduleDAO();
 
-                            $cm[] = $availabel;
-                        }
-                    }
-                } else if ($price) {
-                    foreach ($availableSchedules as $availabel) {
-                        if ($availabel->getPrice() <= $price) {
+            $availableSchedules = $scheduleDAO->getScheduelByEndCityStartCity($travelDate, $arrivalCityID, $departureCityID, $numPeople);
+            $cm = [];
 
-                            $cm[] = $availabel;
-                        }
-                    }
+            // Filter schedules based on user input
+            foreach ($availableSchedules as $schedule) {
+                $scheduleDate = new DateTime($schedule->getDate());
+                $scheduleTime = new DateTime($schedule->getDepartureTime());
 
-                } else if ($com) {
-                    foreach ($availableSchedules as $availabel) {
-                        if ($availabel->getBusID()->getCompany()->getCompanyID() == $com) {
-
-                            $cm[] = $availabel;
-                        }
-                    }
-
-                } else if ($startDate && $endDate) {
-                    foreach ($availableSchedules as $availabel) {
-                        $scheduleDate = new DateTime($availabel->getDate());
-                        if ($scheduleDate >= $startDate && $scheduleDate <= $endDate) {
-
-                            $cm[] = $availabel;
-                        }
-                    }
-
-                } else {
-                    header("Location: index.php");
-                    exit();
+                // Check if the schedule matches the selected filters
+                if (
+                    (!$com || $schedule->getBusID()->getCompany()->getCompanyID() == $com) &&
+                    (!$price || $schedule->getPrice() <= $price) &&
+                    (!$startDate || !$endDate || ($startDate <= $scheduleDate && $endDate >= $scheduleDate)) &&
+                    (!$timeOfDay || $this->isTimeOfDayMatch($scheduleTime, $timeOfDay))
+                ) {
+                    $cm[] = $schedule;
                 }
-                // Pass the data to the view
-                include_once 'app/views/filterPage.php';
-            } else {
-                // Handle other cases or redirect to home if needed
-                header("Location: index.php");
-                exit();
             }
+
+            // Pass the data to the view
+            include_once 'app/views/filterPage.php';
         } else {
-            header("Location: index.php");
-            exit();
+            $this->redirectToHome();
         }
+    }
+    private function isTimeOfDayMatch($scheduleTime, $selectedTimeOfDay)
+    {
+        switch ($selectedTimeOfDay) {
+            case 'morning':
+                return $scheduleTime >= new DateTime('06:00:00') && $scheduleTime < new DateTime('12:00:00');
+            case 'afternoon':
+                return $scheduleTime >= new DateTime('12:00:00') && $scheduleTime < new DateTime('18:00:00');
+            case 'night':
+                return $scheduleTime >= new DateTime('18:00:00') || $scheduleTime < new DateTime('06:00:00');
+            default:
+                return true; // Any Time
+        }
+    }
+    private function isValidSession()
+    {
+        return isset($_SESSION['departureCity']) && isset($_SESSION['arrivalCity']) &&
+            isset($_SESSION['travelDate']) && isset($_SESSION['numPeople']);
+    }
 
-
+    private function redirectToHome()
+    {
+        header("Location: index.php");
+        exit();
     }
 }
