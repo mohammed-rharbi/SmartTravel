@@ -115,10 +115,10 @@ class AuthController
             $mail->Port = 587;
             $mail->SMTPSecure = 'tls';
             $mail->SMTPAuth = true;
-            $mail->Username = 'ss.ngnlzero@gmail.com';
-            $mail->Password = 'jfwg nnun noyf lplj';
+            $mail->Username = '';
+            $mail->Password = '';
 
-            $mail->setFrom('ss.ngnlzero@gmail.com', 'SmartTravel');
+            $mail->setFrom('', 'SmartTravel');
             $mail->addAddress($to);
             $mail->Subject = 'Password Reset';
             $mail->Body = "Click the following link to reset your password: $resetLink";
