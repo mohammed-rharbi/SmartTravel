@@ -129,6 +129,10 @@ if (isset($_GET['action'])) {
             $controller = new AuthController();
             $controller->login();
             break;
+        case 'login_As_Operator':
+            $controller = new AuthController();
+            $controller->loginAsOperator();
+            break;
         case 'register':
             $controller = new AuthController();
             $controller->showRegisterForm();
@@ -184,6 +188,14 @@ if (isset($_GET['action'])) {
             $userController = new UserController();
             $userController->ShowAddUser();
             break;
+        case 'ShowUserEdit':
+            $userController = new UserController();
+            $userController->ShowUserEdit();
+            break;
+        case 'UserEdit':
+            $userController = new UserController();
+            $userController->updateUser();
+            break;
         case 'addUser':
             $userController = new UserController();
             $userController->addUser();
@@ -191,6 +203,10 @@ if (isset($_GET['action'])) {
         case 'disable':
             $userController = new UserController();
             $userController->disableUser();
+            break;
+        case 'enable':
+            $userController = new UserController();
+            $userController->enableUser();
             break;
 
         default:
