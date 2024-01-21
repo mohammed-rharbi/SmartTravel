@@ -8,8 +8,9 @@ class Users {
     private $isActive;
     private $registrationDate;
     private $role;
+    private $companyID;
 
-    public function __construct($id, $userName, $password, $email, $isActive, $registrationDate, $role) {
+    public function __construct($id, $userName, $password, $email, $isActive, $registrationDate, $role,$companyID) {
         $this->id = $id;
         $this->userName = $userName;
         $this->password = $password;
@@ -17,6 +18,7 @@ class Users {
         $this->isActive = $isActive;
         $this->registrationDate = $registrationDate;
         $this->role = $role;
+        $this->companyID = $companyID;
     }
 
     public function getId() {
@@ -45,6 +47,9 @@ class Users {
 
     public function getRole() {
         return $this->role;
+    }
+    public function getCompanyID() {
+        return $this->companyID;
     }
 }
 
