@@ -9,7 +9,7 @@ class UserController
     {
         $users = new usersDAO();
         $usersDATA = $users->getAllUsers();
-        include 'app/views/usersView.php';
+        include 'app/views/users/usersView.php';
     }
 
 
@@ -24,7 +24,7 @@ class UserController
 
         $users = new usersDAO();
         $users->addUser($username, $password, $email, $isActive, $registrationDate, $role, $companyID);
-        include('app/views/usersView.php');
+        include('app/views/users/usersView.php');
     }
 
     
@@ -37,7 +37,7 @@ class UserController
 
         $companyDAO = new companyDAO();
         $companyDATA = $companyDAO->getAllCompanies();
-        include('app/views/addUser.php');
+        include('app/views/users/addUser.php');
     }
     function ShowUserEdit()
     {
@@ -46,7 +46,7 @@ class UserController
         $userDATA = $usersDAO->getUserById($userId);
         $companyDAO = new companyDAO();
         $companyDATA = $companyDAO->getAllCompanies();
-        include('app/views/updateUser.php');
+        include('app/views/users/updateUser.php');
     }
 
     function updateUser()
@@ -61,7 +61,7 @@ class UserController
         $companyID = $_POST["companyID"];
         $user = new usersDAO();
         $user->UpdateUser($id,$username, $password, $email, $isActive, $registrationDate, $role, $companyID);
-        include 'app/views/updateUser.php';
+        include 'app/views/users/updateUser.php';
     }
 
     function disableUser()
