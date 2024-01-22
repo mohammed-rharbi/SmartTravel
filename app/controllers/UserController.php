@@ -1,33 +1,30 @@
 <?php
+include_once 'app\models\usersDAO.php';
+include_once 'app/models/companyDAO.php';
+
 class UserController
 {
 
-    function getAllUserss()
+    function getAllUsers()
     {
-
         $users = new usersDAO();
         $usersDATA = $users->getAllUsers();
-        include 'app/views/usersView.php';
+        include 'app/views/users/usersView.php';
     }
 
 
-    function addUser()
-    {
-        $username = $_POST["username"];
-        $password = $_POST["password"];
-        $email = $_POST["email"];
-        $isActive = $_POST["isActive"];
-        $registrationDate = $_POST["registrationDate"];
-        $role = $_POST["role"];
-        if ($_POST["companyID"] == 'NULL') {
-            $companyID = '';
-        } else {
-            $companyID = $_POST["companyID"];
-        }
+    function addUser(){
+        $username = $_POST["username"] ; 
+        $password = $_POST["password"] ; 
+        $email = $_POST["email"] ; 
+        $isActive = $_POST["isActive"] ; 
+        $registrationDate = date("Y-m-d H:i:s");
+        $role = $_POST["role"] ; 
+        $companyID =$_POST["companyID"];
 
         $users = new usersDAO();
-        $usersDATA = $users->addUser($username, $password, $email, $isActive, $registrationDate, $role, $companyID);
-        include('app/views/usersView.php');
+        $users->addUser($username, $password, $email, $isActive, $registrationDate, $role, $companyID);
+        include('app/views/users/usersView.php');
     }
 
 
@@ -40,19 +37,16 @@ class UserController
 
         $companyDAO = new companyDAO();
         $companyDATA = $companyDAO->getAllCompanies();
-        include('app/views/addUser.php');
+        include('app/views/users/addUser.php');
     }
-
-    function updateForm()
+    function ShowUserEdit()
     {
-        $id = $_GET['id'];
+        $userId = $_GET['id'];
         $usersDAO = new usersDAO();
-        $usersDATA = $usersDAO->getAllUsers();
-        // $routeDAO = new RouteDAO();
-        // $routeDATA = $routeDAO->getAllRoute();
-        // $horaire = new horaireDAO();
-        // $horaireDATA = $horaire->getHoraireById($id);
-        include 'app/views/updateHoraire.php';
+        $userDATA = $usersDAO->getUserById($userId);
+        $companyDAO = new companyDAO();
+        $companyDATA = $companyDAO->getAllCompanies();
+        include('app/views/users/updateUser.php');
     }
 
     function updateUser()
@@ -66,27 +60,21 @@ class UserController
         $role = $_POST["role"];
         $companyID = $_POST["companyID"];
         $user = new usersDAO();
-        $usersDATA = $user->UpdateUser($username, $password, $email, $isActive, $registrationDate, $role, $companyID);
-        include 'app/views/updateRoute.php';
+        $user->UpdateUser($id,$username, $password, $email, $isActive, $registrationDate, $role, $companyID);
+        include 'app/views/users/updateUser.php';
     }
-    // function searchHoraire(){
-    //     $vDepart = $_POST["vDepart"] ; 
-    //     $vArrivee = $_POST["vArrivee"] ; 
-    //     $date = $_POST["date"] ; 
-    //     $NumCustom = $_POST["NumCustom"] ; 
-    //     $horaire = new horaireDAO();
-    //     $horaireDATA = $horaire->searchHoraires($vDepart,$vArrivee,$date,$NumCustom);
-
-    //     $ville = new VilleDAO();
-    //     $villesDATA = $ville->getAllVilles();
-    //     include 'view/homeUser.php';
-    // }
 
     function disableUser()
     {
         $id = $_GET['id'];
         $user = new usersDAO();
         $user->disableUser($id);
+    }
+    function enableUser()
+    {
+        $id = $_GET['id'];
+        $user = new usersDAO();
+        $user->enableUser($id);
     }
 }
 ?>

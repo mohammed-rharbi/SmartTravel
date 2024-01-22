@@ -38,6 +38,42 @@ class AuthController
         }
     }
 
+    public function loginAsOperator()
+    {
+            $email = $_SESSION['email_logAs'];
+            $password = $_SESSION['password_logAs'];
+            $user = $this->authDAO->getUserByEmail($email);
+
+            if ($user && $this->comparePasswords($password, $user->getPassword())) {
+                // Login successful
+                $_SESSION['user'] = $user;
+
+                // Debugging: Output user role
+                error_log("User Role: " . $user->getRole());
+
+                // Redirect based on user role
+                switch ($user->getRole()) {
+                    case 'Admin':
+                        header("Location: index.php?action=adminPage");
+                        exit();
+                    case 'Operator':
+                        header("Location: index.php?action=operatorPage");
+                        exit();
+                    case 'Client':
+                        header("Location: index.php?action=clientPage");
+                        exit();
+                    default:
+                        // Debugging: Output unknown role
+                        error_log("Unknown Role: " . $user->getRole());
+                        break;
+                }
+            } else {
+                // Login failed
+                header("Location: index.php?action=login&error=1");
+                exit();
+            }
+    }
+
     private function comparePasswords($inputPassword, $storedPassword)
     {
         return $inputPassword === $storedPassword;
