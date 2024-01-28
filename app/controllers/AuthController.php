@@ -1,4 +1,3 @@
-User
 <?php
 
 require 'app/PHPMailer/src/PHPMailer.php';

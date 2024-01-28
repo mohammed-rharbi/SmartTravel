@@ -1,8 +1,8 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <!-- Logo -->
         <a class="navbar-brand" href="index.php">
-            <img src="path/to/your/logo.png" alt="Your Logo" width="50" height="50">
+            <img src="imgs/logo-no-background.png" alt="Your Logo" width="130" height="50">
         </a>
 
         <?php
@@ -22,7 +22,7 @@
                 <?php
                 switch ($role) {
                     case 'Admin':
-                        echo "<li class='nav-item'><a class='nav-link' href='index.php?action=admin'>Admin Dashboard</a></li>";
+                        echo "<li class='nav-item'><a class='nav-link' href='index.php?action=adminPage'>Admin Dashboard</a></li>";
                         break;
                     case 'Operator':
                         echo "<li class='nav-item'><a class='nav-link' href='index.php?action=operator'>Operator Dashboard</a></li>";

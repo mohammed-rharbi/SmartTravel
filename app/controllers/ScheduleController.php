@@ -19,7 +19,7 @@ class ScheduleController
         $schedules = $this->scheduleDAO->getAllSchedules();
 
         // Pass the data to the view (you may have a specific view for listing schedules)
-        include_once 'app/views/schedule/index.php';
+        include_once 'app/views/schedule/scheduleDASH.php';
     }
 
     public function create()
